@@ -1,1 +1,0 @@
-//  Định nghĩa struct StaffEntry (MSSV, Công việc, Đánh giá...)

@@ -1,1 +1,0 @@
-//  Định nghĩa struct Event (ID, Tên, Trạng thái, Số lượng...)
