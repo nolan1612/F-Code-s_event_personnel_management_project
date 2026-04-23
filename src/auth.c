@@ -53,26 +53,38 @@ int Login(char mssv[], char ps[], Account list[], int accountCount) {
 
 void changePassword(Account *currentAcc) {
         char oldPass[20], newPass[20], confirmPass[20];
-    
         printf("\n--- DOI MAT KHAU ---\n");
+        while(1){
         printf("Nhap mat khau cu: ");
         scanf(" %[^\n]", oldPass);
         
         if (strcmp(oldPass, currentAcc->password) != 0) {
             printf(">> Loi: Mat khau cu khong chinh xac!\n");
-            return;
-        } 
-
+            break;
+        } else{
+        printf(">> Mat khau cu chinh xac!\n");
+         }
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF) {
+            }
+        }
+        while(1){
         printf("Nhap mat khau moi: ");
         scanf(" %[^\n]", newPass);
         printf("Xac nhan mat khau moi: ");
         scanf(" %[^\n]", confirmPass);
 
-        if (strcmp(newPass, confirmPass) == 0) {
+        if (strcmp(newPass, confirmPass) != 0) {
+           printf(">> Loi: Mat khau moi va xac nhan khong khop!\n");
+        } 
+        else{
+        printf(">> Mat khau moi va xac nhan khop!\n");
+         }
+        if(strcmp(newPass, confirmPass) == 0) {
             strcpy(currentAcc->password, newPass);
-        
             printf(">> Thanh cong: Da thay doi mat khau!\n");
-        } else if(strcmp(oldPass, newPass)  32) {
+        }
+        else if(strlen(newPass) == 0 || strlen(confirmPass) == 0) {
         printf("ban co muon giu lai mat khau cu khong? (y/n): ");
         char choice;
             scanf(" %c", &choice);
@@ -80,9 +92,7 @@ void changePassword(Account *currentAcc) {
                 printf(">> Mat khau van duoc giu nguyen!\n");
             }else if(choice == 'n' || choice == 'N') {
                 printf(">> Mat khau van duoc giu nguyen!\n");
+                }
+            }
         }
-        } else {
-            printf(">> Loi: Mat khau moi va xac nhan khong khop!\n");
-        }
-    }
 }
