@@ -10,21 +10,25 @@
 #include "../includes/utils.h"
 
 int checkPassword(char ps[], Account list[], int index) {
-    if (strcmp(ps, list[index].password) == 0) {
-        list[index].failCount = 0; 
-        return 1;
-    } else {
-        list[index].failCount++;
-        
-        if (list[index].failCount >= 3) {
-            printf("Nhap sai mat khau 3 lan. Khoa tai khoan va thoat chuong trinh!\n");
-            list[index].isLocked = 1;
-            return -1;
+    do{
+        if (strcmp(ps, list[index].password) == 0) {
+            list[index].failCount = 0; 
+            return 1;
         } else {
-            printf("Sai mat khau! Ban con %d lan thu.\n", 3 - list[index].failCount);
-            return 0;
+            list[index].failCount++;
+            
+            if (list[index].failCount >= 3) {
+                printf("Nhap sai mat khau 3 lan. Khoa tai khoan va thoat chuong trinh!\n");
+                list[index].isLocked = 1;
+                return -1;
+            } else {
+                printf("Sai mat khau! Ban con %d lan thu.\n", 3 - list[index].failCount);
+                printf("Nhap lai mat khau: ");
+                scanf(" %[^\n]", ps);
+            }
         }
-    }
+    } while (list[index].failCount < 3);
+    
 }
 
 int Login(char mssv[], char ps[], Account list[], int accountCount) {    
@@ -49,11 +53,11 @@ int Login(char mssv[], char ps[], Account list[], int accountCount) {
 
 void changePassword(Account *currentAcc) {
         char oldPass[20], newPass[20], confirmPass[20];
-
+    
         printf("\n--- DOI MAT KHAU ---\n");
         printf("Nhap mat khau cu: ");
         scanf(" %[^\n]", oldPass);
-
+        
         if (strcmp(oldPass, currentAcc->password) != 0) {
             printf(">> Loi: Mat khau cu khong chinh xac!\n");
             return;
@@ -68,7 +72,7 @@ void changePassword(Account *currentAcc) {
             strcpy(currentAcc->password, newPass);
         
             printf(">> Thanh cong: Da thay doi mat khau!\n");
-        } else if(strcmp(oldPass, newPass) == 32) {
+        } else if(strcmp(oldPass, newPass)  32) {
         printf("ban co muon giu lai mat khau cu khong? (y/n): ");
         char choice;
             scanf(" %c", &choice);
@@ -80,4 +84,5 @@ void changePassword(Account *currentAcc) {
         } else {
             printf(">> Loi: Mat khau moi va xac nhan khong khop!\n");
         }
+    }
 }
