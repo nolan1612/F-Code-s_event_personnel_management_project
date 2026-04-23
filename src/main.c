@@ -38,25 +38,47 @@ int main() {
             printf("\n--- DANG NHAP ---\n");
             printf("Nhap MSSV: ");
             scanf(" %[^\n]", mssv); 
-            printf("Nhap mat khau: ");
-            scanf(" %[^\n]", ps);
-            int status = Login(mssv, ps, list, accountCount);
+            // Tìm index và reset failCount trước khi bắt đầu vòng nhập pass
+    for (int i = 0; i < accountCount; i++) {
+        if (strcmp(mssv, list[i].studentid) == 0) {
+            list[i].failCount = 0; // ← reset ở đây
+            break;
+        }
+    }
+
+    int status;
+    do {
+        printf("Nhap mat khau: ");
+        scanf(" %[^\n]", ps);
+        status = Login(mssv, ps, list, accountCount);
+        if (status == -1) {
+            saveAccounts(list, accountCount);
+            printf("Thu lai!\n");
+        } else if (status == -3) {
+            saveAccounts(list, accountCount);
+        }
+            } while (status == -1);
+
+            //xử lý kết quả
             if (status >= 0) {
                 printf("\n>>> Dang nhap thanh cong! <<<\n");
-                if (list[status].role == 1) {
+                if (list[status].role >= 1) {
                     runAdminMenu(&list[status], list, accountCount);
                 } else {
                     runMemberMenu(&list[status], list, accountCount);
                 }
-                saveAccounts(list, accountCount); 
-            } else if (status == -1) {
                 saveAccounts(list, accountCount);
-                exit(1); 
             }
-        } else {
+            else if (status == -2) {
+                printf("Tai khoan khong ton tai!\n");
+            }
+            else if (status == -3) {
+                printf("Tai khoan bi khoa!\n");
+            }
+        }
+        else {
             printf(">> Loi: Lua chon khong hop le!\n");
         }
-    }
-    
+    }   
     return 0;
 }
