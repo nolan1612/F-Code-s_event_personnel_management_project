@@ -1,7 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "menu.h"
-
+#include "../includes/auth.h"
+#include "../includes/event.h"
+#include "../includes/menu.h"
+#include "../includes/fileio.h"
+#include "../includes/report.h"
+#include "../includes/staff.h"
+#include "../includes/utils.h"
 void AdminMenu() {
     printf("\n=========================================\n");
     printf("        BAN CHU NHIEM (ADMIN) MENU       \n");

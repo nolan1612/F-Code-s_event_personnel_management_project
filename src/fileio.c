@@ -1,6 +1,12 @@
-#include <stdio.h>
-#include "fileio.h"
-#include "auth.h"
+#include "../includes/auth.h"
+#include "../includes/event.h"
+#include "../includes/menu.h"
+#include "../includes/fileio.h"
+#include "../includes/report.h"
+#include "../includes/staff.h"
+#include "../includes/utils.h"
+
+
 
 void saveAccounts(Account list[], int count) {
 

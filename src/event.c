@@ -1,6 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include "event.h"
+#include "../includes/auth.h"
+#include "../includes/event.h"
+#include "../includes/menu.h"
+#include "../includes/fileio.h"
+#include "../includes/report.h"
+#include "../includes/staff.h"
+#include "../includes/utils.h"
 void generateEventId(char *dest, int currentCount) {
     sprintf(dest, "EV%06d", currentCount + 1);
 }
@@ -150,7 +157,7 @@ void updateEventStatus(Event events[], int count) {
         if (confirm == 'y' || confirm == 'Y') {
             if (events[foundIndex].staffCount == 0) {
                 char force;
-                printf("!!! CANH BAO: Su kien chua co nhan su nao. Van tiep tuc? (y/n): "); [cite: 50]
+                printf("!!! CANH BAO: Su kien chua co nhan su nao. Van tiep tuc? (y/n): "); 
                 scanf(" %c", &force);
                 if (force != 'y' && force != 'Y') return;
             }

@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "auth.h"
-#include "fileio.h"
-#include "menu.h"
+#include "../includes/auth.h"
+#include "../includes/event.h"
+#include "../includes/menu.h"
+#include "../includes/fileio.h"
+#include "../includes/report.h"
+#include "../includes/staff.h"
+#include "../includes/utils.h"
 
 int main() {
     Account list[MAX_ACCOUNTS];
