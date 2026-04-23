@@ -2,10 +2,11 @@
 #ifndef AUTH_H
 #define AUTH_H
 
-#define MAX_ACCOUNTS 100
+#define MAX_ACCOUNTS 300
 
 typedef struct {
     char studentid[10];
+    char username[50];
     char password[20];
     int role;
     int isLocked;

@@ -8,46 +8,94 @@
 
 
 
-void saveAccounts(Account list[], int count) {
+// void saveAccounts(Account list[], int count) {
 
-    FILE *file = fopen("accounts.dat", "wb"); 
+//     FILE *file = fopen("account.dat", "wb"); 
+//     if (file == NULL) {
+//         printf("Loi: Khong the ghi file accounts.dat!\n");
+//         return;
+//     }
+//     fwrite(list, sizeof(Account), count, file);
+//     fclose(file);
+// }
+void saveAccounts(Account list[], int count) {
+    FILE *file = fopen("data/account.dat", "w"); 
+    
     if (file == NULL) {
-        printf("Loi: Khong the ghi file accounts.dat!\n");
+        printf("Loi: Khong the ghi file data/account.dat!\n");
         return;
     }
-    fwrite(list, sizeof(Account), count, file);
+    
+    for (int i = 0; i < count; i++) {
+        // ĐÃ SỬA: %s %s %s %d %d %d (Đủ 6 chỗ trống: 3 Chuỗi, 3 Số)
+        fprintf(file, "%s %s %s %d %d %d\n", 
+                list[i].studentid, 
+                list[i].username,
+                list[i].password, 
+                list[i].role, 
+                list[i].isLocked, 
+                list[i].failCount);
+    }
+    
     fclose(file);
 }
 
+// int loadAccounts(Account list[]) {
+//     FILE *file = fopen("account.dat", "rb"); 
+//     if (file == NULL) {
+//         printf("[He thong] File accounts.dat chua ton tai. Dang tao du lieu mau...\n");
+        
+//         Account mockData[5] = {
+//             {"SE211377", "Ho26072007*", 1, 0, 0}, 
+//             {"SE210023", "1234567789", 0, 0, 0},  
+//             {"SE211577", "234567890", 0, 0, 0},
+//             {"SE210182", "345678901", 0, 0, 0},
+//             {"SE205432", "ui1234567", 1, 0, 0}  
+//         };
+        
+//         for (int i = 0; i < 5; i++) {
+//             list[i] = mockData[i];
+//         }
+        
+//         saveAccounts(list, 5);
+//         return 5; 
+//     }
+    
+//     int count = 0;
+//     while (fread(&list[count], sizeof(Account), 1, file) == 1) {
+//         count++;
+//     }
+//     fclose(file);
+//     return count;
+// }
+
+
 int loadAccounts(Account list[]) {
-    FILE *file = fopen("accounts.dat", "rb"); 
+   
+    FILE *file = fopen("data/account.dat", "r"); 
+    
     if (file == NULL) {
-        printf("[He thong] File accounts.dat chua ton tai. Dang tao du lieu mau...\n");
-        
-        Account mockData[5] = {
-            {"SE211377", "Ho26072007*", 1, 0, 0}, 
-            {"SE210023", "1234567789", 0, 0, 0},  
-            {"SE211577", "234567890", 0, 0, 0},
-            {"SE210182", "345678901", 0, 0, 0},
-            {"SE205432", "ui1234567", 1, 0, 0}
-        };
-        
-        for (int i = 0; i < 5; i++) {
-            list[i] = mockData[i];
-        }
-        
-        saveAccounts(list, 5);
-        return 5; 
+        printf("[He thong] File data/account.dat chua ton tai!\n");
+        return 0; 
     }
     
     int count = 0;
-    while (fread(&list[count], sizeof(Account), 1, file) == 1) {
+  
+
+
+    while (fscanf(file, "%s %s %s %d %d %d", 
+                  list[count].studentid, 
+                  list[count].username,   
+                  list[count].password, 
+                  &list[count].role, 
+                  &list[count].isLocked, 
+                  &list[count].failCount) == 6) { 
         count++;
     }
+    
     fclose(file);
     return count;
 }
-
 
 void saveEvents(Event list[], int count) {
     FILE *file = fopen("events.dat", "wb"); 

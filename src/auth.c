@@ -28,8 +28,22 @@ int checkPassword(char ps[], Account list[], int index) {
             }
         }
     } while (list[index].failCount < 3);
-    
 }
+    ww
+//     if (strcmp(ps, account->password) == 0) {
+//         account->failCount = 0; 
+//         return 1; 
+//     }
+
+//     account->failCount++;
+//     if (account->failCount >= 3) {
+//         account->isLocked = 1;
+//         printf("Nhap sai mat khau 3 lan. Tai khoan da bi khoa!\n");
+//         return -3;
+//     } 
+//     printf("Sai mat khau! Ban con %d lan thu.\n", 3 - account->failCount);
+//     return -1;  
+// }
 
 int Login(char mssv[], char ps[], Account list[], int accountCount) {    
     for (int i = 0; i < accountCount; i++) {
@@ -87,11 +101,11 @@ void changePassword(Account *currentAcc) {
             strcpy(currentAcc->password, newPass);
             printf(">> Thanh cong: Da thay doi mat khau!\n");
         }
-        else if(strlen(newPass) == 0  strlen(confirmPass) == 0) {
+        else if(strlen(newPass) == 0  || strlen(confirmPass) == 0) {
         printf("ban co muon giu lai mat khau cu khong? (y/n): ");
         char choice;
             scanf(" %c", &choice);
-            if(choice == 'y'  choice == 'Y') {
+            if(choice == 'y' || choice == 'Y') {
                 printf(">> Mat khau van duoc giu nguyen!\n");
             }else if(choice == 'n' || choice == 'N') {
                 printf(">> Mat khau van duoc giu nguyen!\n");
