@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "auth.h"
 #include "fileio.h"
+#include "event.h"
 #include "menu.h"
 
 int main() {

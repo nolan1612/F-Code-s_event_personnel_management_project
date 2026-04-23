@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "fileio.h"
 #include "auth.h"
-
+#include "event.h"
 void saveAccounts(Account list[], int count) {
 
     FILE *file = fopen("accounts.dat", "wb"); 

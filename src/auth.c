@@ -59,6 +59,7 @@ void changePassword(Account *currentAcc) {
 
     if (strcmp(newPass, confirmPass) == 0) {
         strcpy(currentAcc->password, newPass);
+      
         printf(">> Thanh cong: Da thay doi mat khau!\n");
     } else {
         printf(">> Loi: Mat khau xac nhan khong khop!\n");
