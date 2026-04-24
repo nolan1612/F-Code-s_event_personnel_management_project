@@ -24,7 +24,9 @@ typedef struct {
 } Event;
 
 void generateEventId(char *dest, int currentCount);
-void createEvent(Event events[], int count);
+void createEvent(Event events[], int *count);
 void editEvent(Event events[], int count);
 void updateEventStatus(Event events[], int count);
+void deleteEvent(Event events[], int *count);
+void displayAllEvents(Event events[], int count);
 #endif
