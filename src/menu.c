@@ -78,8 +78,10 @@ void runAdminMenu(Account *currentAcc, Account list[], int accountCount) {
                 saveAccounts(list, accountCount);
                 break;
             case 0: 
-                printf("\n>> Da dang xuat khoi tai khoan\n"); 
-                break;
+                if (Logout(currentAcc, list, accountCount) == 0) {
+                    choice = -1; 
+                }
+                break; 
             default: 
                 printf(">> Loi: Lua chon khong hop le. Vui long nhap lai!\n");
         }
@@ -113,7 +115,9 @@ void runMemberMenu(Account *currentAcc, Account list[], int accountCount) {
                 saveAccounts(list, accountCount);
                 break;
             case 0: 
-                printf("\n>> Da dang xuat khoi tai khoan\n"); 
+                if (Logout(currentAcc, list, accountCount) == 0) {
+                    choice = -1; 
+                }
                 break;
             default: 
                 printf(">> Loi: Lua chon khong hop le. Vui long nhap lai!\n");

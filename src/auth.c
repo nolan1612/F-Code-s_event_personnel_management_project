@@ -135,3 +135,19 @@ void changePassword(Account *currentAcc) {
             }
         }
     }
+
+int Logout(Account *currentAcc, Account list[], int accountCount) {
+    printf("\n---DANG XUAT ---\n");
+    printf("Xac nhan dang xuat? (y/n): ");
+    char choice;
+    scanf(" %c", &choice);
+    if (choice == 'y' || choice == 'Y') {
+        saveAccounts(list, accountCount);
+        printf(">> Da dang xuat thanh cong. Hen gap lai %s!\n", currentAcc->studentid);
+        return 1;
+    } else {
+        printf(">> Huy dang xuat.\n");
+        return 0;
+    }
+
+}
