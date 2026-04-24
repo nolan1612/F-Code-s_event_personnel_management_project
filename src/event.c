@@ -41,6 +41,8 @@ void createEvent(Event events[], int count) {
         } else {
             printf(">> Loi: Ngay ket thuc phai sau hoac bang ngay bat dau! Vui long nhap lai.\n");
         }
+
+        // kiểm tra thời gian sự kiện có trùng hay thời gian diễn ra và kết thúc có ở quá khứ hay sự kiện có thời gian là "hiện đang diễn ra"
     }
     
     newEv.status = 0;
@@ -112,6 +114,9 @@ void editEvent(Event events[], int count) {
         } else {
             printf(">> Loi: Ngay ket thuc phai sau ngay bat dau!\n");
         }
+
+        // kiểm tra sự kiện trùng nhau
+
     }
 
     printf(">> Thanh cong: Da cap nhat thong tin su kien %s.\n", searchId);
