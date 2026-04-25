@@ -12,6 +12,7 @@ typedef struct {
     char studentName[100];
 } StaffEntry;
 
-int search_events(Event list[], int countEvent, char eId[]);
+int search_events(Event list[], int countEvent, char eId[], char eName[]);
+void event_detail(Event list[], int countEvent, char eId[], char eName[], StaffEntry staffList[], int countAccount);
 
 #endif

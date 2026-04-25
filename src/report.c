@@ -8,13 +8,16 @@
 
 
 
-int search_events(Event list[], int countEvent, char eId[])
+int search_events(Event list[], int countEvent, char eId[], char eName[])
 {   
     int Index = -1;
 
     for (int i = 0; i < countEvent; i++)
     {
-        if ((strcmp(eId[i], list[i].eventId) == 0) || (strcmp(eId[i], toupper(list[i].eventId)) == 0))
+        if ((strcmp(eId[i], list[i].eventId) == 0) 
+            || (strcmp(eId[i], toupper(list[i].eventId)) == 0) 
+            || (strcmp(eName[i], list[i].name) == 0) 
+            || (strcmp(eName[i], toupper(list[i].name)) == 0))
         {
             Index = i;
 
@@ -34,9 +37,9 @@ int search_events(Event list[], int countEvent, char eId[])
 }
 
 
-void event_detail(Event list[], int countEvent, char eId[], StaffEntry staffList[], int countAccount)
+void event_detail(Event list[], int countEvent, char eId[], char eName[], StaffEntry staffList[], int countAccount)
 {
-    int Index = search_events(list, countEvent, eId);
+    int Index = search_events(list, countEvent, eId, eName);
 
     if (Index != -1)
     {
