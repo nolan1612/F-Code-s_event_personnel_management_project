@@ -13,7 +13,7 @@ typedef struct {
     int failCount;
 } Account;
 
-int checkPassword(char ps[], Account list[], int index);
+int checkPassword(char ps[], Account *account);
 int Login(char mssv[], char ps[], Account list[], int accountCount);
 void changePassword(Account *currentAcc);
 
