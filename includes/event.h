@@ -1,12 +1,13 @@
 //  Định nghĩa struct Event (ID, Tên, Trạng thái, Số lượng...)
 #ifndef EVENT_H
 #define EVENT_H
-
+#include "auth.h"
 #define MAX_STAFF_PER_EVENT 30
 #define MAX_EVENTS 1000000
 
 typedef struct {
     char studentId[15]; 
+    char studentName[50];
     int role;             
     char description[100]; 
 } StaffEntry;

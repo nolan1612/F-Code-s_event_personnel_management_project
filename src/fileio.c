@@ -22,7 +22,7 @@ void saveAccounts(Account list[], int count) {
     FILE *file = fopen("data/account.dat", "w"); 
     
     if (file == NULL) {
-        printf("Loi: Khong the ghi file data/account.dat!\n");
+        printf("Loi .dat!\n");
         return;
     }
     
@@ -80,8 +80,6 @@ int loadAccounts(Account list[]) {
     }
     
     int count = 0;
-  
-
 
     while (fscanf(file, "%s %s %s %d %d %d", 
                   list[count].studentid, 
@@ -98,7 +96,7 @@ int loadAccounts(Account list[]) {
 }
 
 void saveEvents(Event list[], int count) {
-    FILE *file = fopen("events.dat", "wb"); 
+    FILE *file = fopen("data/events.dat", "wb"); 
     if (file == NULL) {
         printf("\033[1;31m[Loi]\033[0m Khong the mo file events.dat de ghi!\n");
         return;
@@ -113,7 +111,7 @@ void saveEvents(Event list[], int count) {
 }
 
 int loadEvents(Event list[]) {
-    FILE *file = fopen("events.dat", "rb"); 
+    FILE *file = fopen("data/events.dat", "rb"); 
     if (file == NULL) {
         return 0; 
     }

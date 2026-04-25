@@ -1,18 +1,10 @@
-// Khai báo các tính năng nâng cao
+// Khai bao cac tinh nang nang cao
 #ifndef REPORT_H
 #define REPORT_H
 
-
 #include "event.h"
 
-typedef struct {
-    char studentId[15]; 
-    int role;             
-    char description[100]; 
-    char studentName[100];
-} StaffEntry;
-
-int search_events(Event list[], int countEvent, char eId[], char eName[]);
-void event_detail(Event list[], int countEvent, char eId[], char eName[], StaffEntry staffList[], int countAccount);
+int search_events(Event list[], int countEvent, char eId[]);
+void event_detail(Event list[], int countEvent);
 
 #endif

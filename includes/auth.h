@@ -5,15 +5,15 @@
 #define MAX_ACCOUNTS 500
 
 typedef struct {
-    char studentid[10];
+    char studentid[20];
     char username[50];
     char password[20];
-    int role;
-    int isLocked;
+    int role; 
+    int isLocked; 
     int failCount;
 } Account;
 
-int checkPassword(char ps[], Account list[], int index);
+int checkPassword(char ps[], Account *account);
 int Login(char mssv[], char ps[], Account list[], int accountCount);
 void changePassword(Account *currentAcc);
 
