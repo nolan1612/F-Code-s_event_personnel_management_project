@@ -35,7 +35,7 @@ void MemberMenu() {
     printf("0. Dang xuat\n");
     printf("=========================================\n");
 }
-void runAdminMenu(Account *currentAcc, Account list[], int accountCount) {
+void runAdminMenu(Account *currentAcc, Account list[], int accountCount, Event eventList[], int *eventCount) {
     int choice;
     do {
         AdminMenu();
@@ -47,7 +47,7 @@ void runAdminMenu(Account *currentAcc, Account list[], int accountCount) {
 
         switch(choice) {
             case 1: 
-                // 1. Tao su kien moi
+                createEvent(eventList, eventCount);
                 break;
             case 2: 
                 // 2. Sua thong tin su kien
@@ -62,7 +62,7 @@ void runAdminMenu(Account *currentAcc, Account list[], int accountCount) {
                 // 5. Quan ly nhan su (Them/Sua/Xoa)
                 break;
             case 6: 
-                // 6. Xem danh sach tat ca su kien
+                displayAllEvents(eventList, *eventCount);
                 break;
             case 7: 
                 // 7. Xem chi tiet mot su kien
@@ -85,7 +85,7 @@ void runAdminMenu(Account *currentAcc, Account list[], int accountCount) {
         }
     } while (choice != 0); 
 }
-void runMemberMenu(Account *currentAcc, Account list[], int accountCount) {
+void runMemberMenu(Account *currentAcc, Account list[], int accountCount, Event eventList[], int eventCount) {
     int choice;
     do {
         MemberMenu();
@@ -97,7 +97,7 @@ void runMemberMenu(Account *currentAcc, Account list[], int accountCount) {
 
         switch(choice) {
             case 1: 
-                // 1. Xem profile ca nhan
+                viewMemberProfile(currentAcc);
                 break;
             case 2: 
                 // 2. Xem danh sach su kien dang tham gia

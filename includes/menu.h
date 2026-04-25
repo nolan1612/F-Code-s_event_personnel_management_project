@@ -3,7 +3,7 @@
 
 void AdminMenu();
 void MemberMenu();
-void runAdminMenu(Account *currentAcc, Account list[], int accountCount);
-void runMemberMenu(Account *currentAcc, Account list[], int accountCount);
+void runAdminMenu(Account *currentAcc, Account list[], int accountCount, Event eventList[], int *eventCount);
+void runMemberMenu(Account *currentAcc, Account list[], int accountCount, Event eventList[], int eventCount);
 
 #endif
