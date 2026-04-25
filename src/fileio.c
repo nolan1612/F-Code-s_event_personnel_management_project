@@ -22,7 +22,7 @@ void saveAccounts(Account list[], int count) {
     FILE *file = fopen("data/account.dat", "w"); 
     
     if (file == NULL) {
-        printf("Loi: Khong the ghi file data/account.dat!\n");
+        printf("Loi .dat!\n");
         return;
     }
     

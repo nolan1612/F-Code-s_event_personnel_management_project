@@ -10,57 +10,55 @@
 #include "../includes/utils.h"
 
 
-int checkPassword(char ps[], Account list[], int index) {
-    do{
-        if (strcmp(ps, list[index].password) == 0) {
-            list[index].failCount = 0; 
-            return 1;
-        } else {
-            list[index].failCount++;
+// int checkPassword(char ps[], Account list[], int index) {
+//     do{
+//         if (strcmp(ps, list[index].password) == 0) {
+//             list[index].failCount = 0; 
+//             return 1;
+//         } else {
+//             list[index].failCount++;
             
-            if (list[index].failCount >= 3) {
-                printf("Nhap sai mat khau 3 lan. Khoa tai khoan va thoat chuong trinh!\n");
-                list[index].isLocked = 1;
-                return -1;
-            } else {
-                printf("Sai mat khau! Ban con %d lan thu.\n", 3 - list[index].failCount);
-                printf("Nhap lai mat khau: ");
-                scanf(" %[^\n]", ps);
-            }
-        }
-    } while (list[index].failCount < 3);
-}
-// int checkPassword(char ps[], Account *account) {
-//     if (strcmp(ps, account->password) == 0) {
-//         account->failCount = 0; 
-//         return 1; 
-//     }
-
-//     account->failCount++;
-//     if (account->failCount >= 3) {
-//         account->isLocked = 1;
-//         printf("Nhap sai mat khau 3 lan. Tai khoan da bi khoa!\n");
-//         return -3;
-//     } 
-//     printf("Sai mat khau! Ban con %d lan thu.\n", 3 - account->failCount);
-//     return -1;  
-
-
-    
-//     if (strcmp(ps, account->password) == 0) {
-//         account->failCount = 0; 
-//         return 1; 
-//     }
-
-//     account->failCount++;
-//     if (account->failCount >= 3) {
-//         account->isLocked = 1;
-//         printf("Nhap sai mat khau 3 lan. Tai khoan da bi khoa!\n");
-//         return -3;
-//     } 
-//     printf("Sai mat khau! Ban con %d lan thu.\n", 3 - account->failCount);
-//     return -1;  
+//             if (list[index].failCount >= 3) {
+//                 printf("Nhap sai mat khau 3 lan. Khoa tai khoan va thoat chuong trinh!\n");
+//                 list[index].isLocked = 1;
+//                 return -1;
+//             } else {
+//                 printf("Sai mat khau! Ban con %d lan thu.\n", 3 - list[index].failCount);
+//                 printf("Nhap lai mat khau: ");
+//                 scanf(" %[^\n]", ps);
+//             }
+//         }
+//     } while (list[index].failCount < 3);
 // }
+int checkPassword(char ps[], Account *account) {
+    if (strcmp(ps, account->password) == 0) {
+        account->failCount = 0; 
+        return 1; 
+    }
+
+    account->failCount++;
+    if (account->failCount >= 3) {
+        account->isLocked = 1;
+        printf("Nhap sai mat khau 3 lan. Tai khoan da bi khoa!\n");
+        return -3;
+    } 
+    printf("Sai mat khau! Ban con %d lan thu.\n", 3 - account->failCount);
+    return -1;  
+
+    if (strcmp(ps, account->password) == 0) {
+        account->failCount = 0; 
+        return 1; 
+    }
+
+    account->failCount++;
+    if (account->failCount >= 3) {
+        account->isLocked = 1;
+        printf("Nhap sai mat khau 3 lan. Tai khoan da bi khoa!\n");
+        return -3;
+    } 
+    printf("Sai mat khau! Ban con %d lan thu.\n", 3 - account->failCount);
+    return -1;  
+}
 
 int Login(char mssv[], char ps[], Account list[], int accountCount) {    
     int index = -1;
@@ -79,9 +77,7 @@ int Login(char mssv[], char ps[], Account list[], int accountCount) {
         return -3; 
     }
 
-    list[index].failCount = 0;
-
-    int result = checkPassword(ps, list, index);
+    int result = checkPassword(ps, &list[index]);
     if (result == 1) return index;
     if (result == -1) return -1;   
     if (result == -3) return -3;
@@ -94,7 +90,8 @@ void changePassword(Account *currentAcc) {
         while(1) {
             printf("Nhap mat khau cu: ");
             scanf(" %[^\n]", oldPass);
-
+//Nếu như tôi quên luoon mật khẩu thì có cách nào để lấy lại không? T
+//Tôi có thể liên hệ với admin để reset mật khẩu không?
         if (strcmp(oldPass, currentAcc->password) != 0) {
             printf(">> Loi: Mat khau cu khong chinh xac!\n");
         } else {
@@ -106,7 +103,7 @@ void changePassword(Account *currentAcc) {
         while ((c = getchar()) != '\n' && c != EOF) {
             }
         }
-        while(1){
+    while(1){
         printf("Nhap mat khau moi: ");
         scanf(" %[^\n]", newPass);
         printf("Xac nhan mat khau moi: ");
@@ -120,6 +117,7 @@ void changePassword(Account *currentAcc) {
         break;
         }
     }
+      
         if(strcmp(newPass, confirmPass) == 0) {
             strcpy(currentAcc->password, newPass);
             printf(">> Thanh cong: Da thay doi mat khau!\n");
