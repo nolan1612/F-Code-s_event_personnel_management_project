@@ -49,15 +49,15 @@ int Login(char mssv[], char ps[], Account list[], int accountCount) {
     return -1; 
 }
 
-void changePassword(Account *currentAcc) {
-    char oldPass[20], newPass[20], confirmPass[20];
-    int failCount = 0; 
-    
-    printf("\n--- CHANGE PASSWORD ---\n");
+    void changePassword(Account *currentAcc) {
+        char oldPass[20], newPass[20], confirmPass[20];
+        int failCount = 0; 
+        
+        printf("\n--- CHANGE PASSWORD ---\n");
 
     while(1) {
-        printf("Enter old password: ");
-        scanf(" %[^\n]", oldPass);
+        printf("Enter old password (Type '0' to cancel): ");
+        scanf(" %s", oldPass);
 
         if (strcmp(oldPass, "0") == 0) {
             printf(">> Change password canceled. Returning to menu...\n");
@@ -67,48 +67,50 @@ void changePassword(Account *currentAcc) {
         if (strcmp(oldPass, currentAcc->password) != 0) {
             failCount++; 
             printf(">> Error: Incorrect old password!\n");
-            printf(">> Please try again. You have %d attempts left.\n", 3 - failCount);
+            
             
             if (failCount >= 3) {
                 printf("\033[1;33m[Tip]\033[0m If you forgot your password, type '0' to exit and ask the Admin to reset it!\n");
+            } else {
+                printf(">> Please try again.\n");
             }
         } else {
             break; 
         }
     }
 
-    while(1) {
-        printf("Enter new password (Type '0' to cancel): "); 
-        scanf(" %[^\n]", newPass);
-        
-        if (strcmp(newPass, "0") == 0) {
-            printf(">> Change password canceled. Returning to menu...\n");
-            return; 
-        }
+        while(1) {
+            printf("Enter new password (Type '0' to cancel): "); 
+            scanf(" %[^\n]", newPass);
+            
+            if (strcmp(newPass, "0") == 0) {
+                printf(">> Change password canceled. Returning to menu...\n");
+                return; 
+            }
 
-        if (strcmp(newPass, currentAcc->password) == 0) {
-            printf(">> Error: New password cannot be the same as the current password!\n");
-            continue; 
-        }
+            if (strcmp(newPass, currentAcc->password) == 0) {
+                printf(">> Error: New password cannot be the same as the current password!\n");
+                continue; 
+            }
 
-        printf("Confirm new password: ");
-        scanf(" %[^\n]", confirmPass);
+            printf("Confirm new password: ");
+            scanf(" %[^\n]", confirmPass);
 
-        if (strcmp(confirmPass, "0") == 0) {
-            printf(">> Change password canceled. Returning to menu...\n");
-            return; 
-        }
+            if (strcmp(confirmPass, "0") == 0) {
+                printf(">> Change password canceled. Returning to menu...\n");
+                return; 
+            }
 
-        if (strcmp(newPass, confirmPass) != 0) {
-            printf(">> Error: New password and confirmation do not match!\n");
-        } 
-        else{
-            strcpy(currentAcc->password, newPass);
-            printf("\033[1;32m>> Success: Password has been changed!\033[0m\n");
-            break; 
+            if (strcmp(newPass, confirmPass) != 0) {
+                printf(">> Error: New password and confirmation do not match!\n");
+            } 
+            else{
+                strcpy(currentAcc->password, newPass);
+                printf("\033[1;32m>> Success: Password has been changed!\033[0m\n");
+                break; 
+            }
         }
     }
-}
 
 int Logout(Account *currentAcc, Account list[], int accountCount) {
     printf("Confirm logout? (y/n): ");
