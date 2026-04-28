@@ -16,5 +16,5 @@ typedef struct {
 int checkPassword(char ps[], Account list[], int index);
 int Login(char mssv[], char ps[], Account list[], int accountCount);
 void changePassword(Account *currentAcc);
-
+int Logout(Account *currentAcc, Account list[], int accountCount);
 #endif
