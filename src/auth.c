@@ -9,27 +9,6 @@
 #include "../includes/staff.h"
 #include "../includes/utils.h"
 
-
-// int checkPassword(char ps[], Account list[], int index) {
-//     do{
-//         if (strcmp(ps, list[index].password) == 0) {
-//             list[index].failCount = 0; 
-//             return 1;
-//         } else {
-//             list[index].failCount++;
-            
-//             if (list[index].failCount >= 3) {
-//                 printf("Nhap sai mat khau 3 lan. Khoa tai khoan va thoat chuong trinh!\n");
-//                 list[index].isLocked = 1;
-//                 return -1;
-//             } else {
-//                 printf("Sai mat khau! Ban con %d lan thu.\n", 3 - list[index].failCount);
-//                 printf("Nhap lai mat khau: ");
-//                 scanf(" %[^\n]", ps);
-//             }
-//         }
-//     } while (list[index].failCount < 3);
-// }
 int checkPassword(char ps[], Account *account) {
     if (strcmp(ps, account->password) == 0) {
         account->failCount = 0; 
@@ -39,24 +18,10 @@ int checkPassword(char ps[], Account *account) {
     account->failCount++;
     if (account->failCount >= 3) {
         account->isLocked = 1;
-        printf("Nhap sai mat khau 3 lan. Tai khoan da bi khoa!\n");
+        printf("Incorrect password 3 times. This account has been locked!\n");
         return -3;
     } 
-    printf("Sai mat khau! Ban con %d lan thu.\n", 3 - account->failCount);
-    return -1;  
-
-    if (strcmp(ps, account->password) == 0) {
-        account->failCount = 0; 
-        return 1; 
-    }
-
-    account->failCount++;
-    if (account->failCount >= 3) {
-        account->isLocked = 1;
-        printf("Nhap sai mat khau 3 lan. Tai khoan da bi khoa!\n");
-        return -3;
-    } 
-    printf("Sai mat khau! Ban con %d lan thu.\n", 3 - account->failCount);
+    printf("Incorrect password! You have %d attempts left.\n", 3 - account->failCount);
     return -1;  
 }
 
@@ -69,11 +34,11 @@ int Login(char mssv[], char ps[], Account list[], int accountCount) {
         }
     }
     if (index == -1) {
-        printf("MSSV khong ton tai!\n");
+        printf("Student ID does not exist!\n");
         return -2;
     }
     if (list[index].isLocked == 1) {
-        printf("Tai khoan nay da bi khoa!\n");
+        printf("This account has been locked!\n");
         return -3; 
     }
 
@@ -88,80 +53,73 @@ void changePassword(Account *currentAcc) {
     char oldPass[20], newPass[20], confirmPass[20];
     int failCount = 0; 
     
-    printf("\n--- DOI MAT KHAU ---\n");
+    printf("\n--- CHANGE PASSWORD ---\n");
 
-    
     while(1) {
-        printf("Nhap mat khau cu: ");
+        printf("Enter old password: ");
         scanf(" %[^\n]", oldPass);
 
-      
         if (strcmp(oldPass, "0") == 0) {
-            printf(">> Da huy doi mat khau. Quay lai menu...\n");
+            printf(">> Change password canceled. Returning to menu...\n");
             return; 
         }
 
         if (strcmp(oldPass, currentAcc->password) != 0) {
             failCount++; 
-            printf(">> Loi: Mat khau cu khong chinh xac!\n");
-            printf(">> Hay thu lai. Ban con %d lan thu.\n", 3 - failCount);
+            printf(">> Error: Incorrect old password!\n");
+            printf(">> Please try again. You have %d attempts left.\n", 3 - failCount);
             
-            // Nếu sai từ 3 lần trở lên, tung phao cứu sinh
             if (failCount >= 3) {
-                printf("\033[1;33m[Meo]\033[0m Neu ban da quen mat khau, hay go '0' de thoat ra va nho Admin reset nhe!\n");
+                printf("\033[1;33m[Tip]\033[0m If you forgot your password, type '0' to exit and ask the Admin to reset it!\n");
             }
         } else {
             break; 
         }
     }
 
-
     while(1) {
-        printf("Nhap mat khau moi (Go '0' de huy): "); 
+        printf("Enter new password (Type '0' to cancel): "); 
         scanf(" %[^\n]", newPass);
         
         if (strcmp(newPass, "0") == 0) {
-            printf(">> Da huy doi mat khau. Quay lai menu...\n");
+            printf(">> Change password canceled. Returning to menu...\n");
             return; 
         }
 
         if (strcmp(newPass, currentAcc->password) == 0) {
-            printf(">> Loi: Mat khau moi khong duoc giong mat khau hien tai!\n");
+            printf(">> Error: New password cannot be the same as the current password!\n");
             continue; 
         }
 
-        printf("Xac nhan mat khau moi: ");
+        printf("Confirm new password: ");
         scanf(" %[^\n]", confirmPass);
 
         if (strcmp(confirmPass, "0") == 0) {
-            printf(">> Da huy doi mat khau. Quay lai menu...\n");
+            printf(">> Change password canceled. Returning to menu...\n");
             return; 
         }
 
         if (strcmp(newPass, confirmPass) != 0) {
-            printf(">> Loi: Mat khau moi va xac nhan khong khop!\n");
+            printf(">> Error: New password and confirmation do not match!\n");
         } 
         else{
             strcpy(currentAcc->password, newPass);
-            printf("\033[1;32m>> Thanh cong: Da thay doi mat khau!\033[0m\n");
+            printf("\033[1;32m>> Success: Password has been changed!\033[0m\n");
             break; 
         }
     }
 }
 
-
-
 int Logout(Account *currentAcc, Account list[], int accountCount) {
-    printf("Xac nhan dang xuat? (y/n): ");
+    printf("Confirm logout? (y/n): ");
     char choice;
     scanf(" %c", &choice);
     if (choice == 'y' || choice == 'Y') {
         saveAccounts(list, accountCount);
-        printf(">> Da dang xuat thanh cong. Hen gap lai %s!\n", currentAcc->studentid);
+        printf(">> Logged out successfully. See you again %s!\n", currentAcc->studentid);
         return 1;
     } else {
-        printf(">> Huy dang xuat.\n");
+        printf(">> Logout canceled.\n");
         return 0;
     }
-
 }
