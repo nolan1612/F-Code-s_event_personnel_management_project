@@ -7,8 +7,10 @@
 #include "../includes/report.h"
 #include "../includes/staff.h"
 #include "../includes/utils.h"
+
 Account list[MAX_ACCOUNTS];
 Event eventList[MAX_EVENTS];
+
 int main() {
     char mssv[10];
     char ps[20];
@@ -16,48 +18,57 @@ int main() {
     
     int accountCount = loadAccounts(list);
     int eventCount = loadEvents(eventList);
-    printf("[He thong] Da tai thanh cong %d tai khoan va %d su kien tu file.\n", accountCount, eventCount);
+    printf("[System] Successfully loaded %d accounts and %d events from file.\n", accountCount, eventCount);
 
-	while (1) {
+    while (1) {
         printf("\n=========================================\n");
-        printf("    CHAO MUNG DEN VOI F-CODE STAFF   \n");
+        printf("         WELCOME TO F-CODE STAFF         \n");
         printf("=========================================\n");
-        printf("1. Dang nhap\n");
-        printf("0. Thoat chuong trinh\n");
+        printf("1. Login\n");
+        printf("0. Exit program\n");
         printf("-----------------------------------------\n");
-        printf("Lua chon cua ban: ");
+        printf("Your choice: ");
         
         if (scanf("%d", &choice) != 1) {
-            while (getchar() != '\n');
+            while (getchar() != '\n'); // Clear buffer if input is not an integer
             continue;
         }
 
         if (choice == 0) {
-            printf("Tam biet! Hen gap lai.\n");
+            printf("Goodbye! See you again.\n");
             break;
         } else if (choice == 1) {
-            printf("\n--- DANG NHAP ---\n");
-            printf("Nhap MSSV: ");
+           
+            printf("\n--- LOGIN ---\n");
+            printf("Enter Student ID: ");
             scanf(" %[^\n]", mssv); 
-            printf("Nhap mat khau: ");
-            scanf(" %[^\n]", ps);
-            int status = Login(mssv, ps, list, accountCount);
-            if (status >= 0) {
-                printf("\n>>> Dang nhap thanh cong! <<<\n");
-                if (list[status].role == 1) {
-                    runAdminMenu(&list[status], list, accountCount,eventList, &eventCount);
-                } else {
-                    runMemberMenu(&list[status], list, accountCount,eventList, eventCount);
+            
+            while(1) {  
+                printf("Enter password: ");
+                scanf(" %[^\n]", ps);
+                
+                int status = Login(mssv, ps, list, accountCount);
+               
+                if (status >= 0) {
+                    printf("\n>>> Login successful! <<<\n");
+                    if (list[status].role == 1) {
+                        runAdminMenu(&list[status], list, accountCount, eventList, &eventCount);
+                    } else {
+                        runMemberMenu(&list[status], list, accountCount, eventList, eventCount);
+                    }
+                    saveAccounts(list, accountCount); 
+                    break;
+                } else if (status == -1) {
+                    saveAccounts(list, accountCount);
+                    
+                } else if (status == -2 || status == -3){
+                    saveAccounts(list, accountCount);
+                    break;
                 }
-                saveAccounts(list, accountCount); 
-            } else if (status == -1) {
-                saveAccounts(list, accountCount);
-                exit(1); 
             }
         } else {
-            printf(">> Loi: Lua chon khong hop le!\n");
+            printf(">> Error: Invalid choice!\n");
         }
     }
-    
     return 0;
 }
