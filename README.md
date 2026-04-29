@@ -84,10 +84,10 @@ gcc src/*.c -Iincludes -o main
 ---
 
 ## Project Structure
-
-├── src/                # Source code (.c)
-├── includes/           # Header files (.h)
-├── data/               # Data files (.dat)
+```bash
+├── src/                # Source code
+├── includes/           # Header files
+├── data/               # Data storage
 │   ├── events.dat
 │   └── accounts.dat
 ├── Makefile
