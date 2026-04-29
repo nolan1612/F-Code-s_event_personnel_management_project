@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "../includes/auth.h"
 #include "../includes/event.h"
 #include "../includes/menu.h"
@@ -8,8 +9,81 @@
 #include "../includes/report.h"
 #include "../includes/staff.h"
 #include "../includes/utils.h"
-void generateEventId(char *dest, int currentCount) {
-    sprintf(dest, "EV%06d", currentCount + 1);
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h> // Thu vien bat buoc de tinh toan ngay thang
+
+#include "../includes/auth.h"
+#include "../includes/event.h"
+#include "../includes/menu.h"
+#include "../includes/fileio.h"
+#include "../includes/report.h"
+#include "../includes/staff.h"
+#include "../includes/utils.h"
+
+int isValidDate(const char* date) {
+    if (strlen(date) != 10) return 0;
+    if (date[4] != '-' || date[7] != '-') return 0;
+    
+    int year, month, day;
+    if (sscanf(date, "%d-%d-%d", &year, &month, &day) != 3) return 0;
+    
+    if (year < 1900 || year > 2100) return 0; 
+    if (month < 1 || month > 12) return 0;
+    if (day < 1 || day > 31) return 0;
+    
+    int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+        daysInMonth[2] = 29;
+    }
+    
+    if (day > daysInMonth[month]) return 0;
+    return 1;
+}
+
+int getDaysDifference(const char* start, const char* end) {
+    struct tm tm_start = {0};
+    struct tm tm_end = {0};
+
+    sscanf(start, "%d-%d-%d", &tm_start.tm_year, &tm_start.tm_mon, &tm_start.tm_mday);
+    sscanf(end, "%d-%d-%d", &tm_end.tm_year, &tm_end.tm_mon, &tm_end.tm_mday);
+
+    tm_start.tm_year -= 1900;
+    tm_start.tm_mon -= 1;
+    tm_end.tm_year -= 1900;
+    tm_end.tm_mon -= 1;
+
+    time_t time_start = mktime(&tm_start);
+    time_t time_end = mktime(&tm_end);
+
+    double seconds = difftime(time_end, time_start);
+    return (int)(seconds / (60 * 60 * 24)); 
+}
+
+int checkOverlap(Event events[], int count, const char* newStart, const char* newEnd, const char* ignoreEventId) {
+    for (int i = 0; i < count; i++) {
+        if (ignoreEventId != NULL && strcmp(events[i].eventId, ignoreEventId) == 0) {
+            continue;
+        }
+        if (strcmp(newStart, events[i].endDate) <= 0 && strcmp(events[i].startDate, newEnd) <= 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void generateEventId(char *dest, Event events[], int count) {
+    int maxId = 0;
+    for (int i = 0; i < count; i++) {
+        int currentId;
+        if (sscanf(events[i].eventId, "EV%d", &currentId) == 1) {
+            if (currentId > maxId) {
+                maxId = currentId;
+            }
+        }
+    }
+    sprintf(dest, "EV%06d", maxId + 1);
 }
 
 void createEvent(Event events[], int *count) {
@@ -19,7 +93,7 @@ void createEvent(Event events[], int *count) {
     }
 
     Event newEv;
-    generateEventId(newEv.eventId, *count); 
+    generateEventId(newEv.eventId, events, *count); 
     
     printf("Nhap ten su kien: ");
     scanf(" %[^\n]", newEv.name);
@@ -33,14 +107,35 @@ void createEvent(Event events[], int *count) {
     while (1) {
         printf("Nhap ngay bat dau (YYYY-MM-DD): ");
         scanf(" %[^\n]", newEv.startDate);
+        if (!isValidDate(newEv.startDate)) {
+            printf("\033[1;31m>> Loi: Ngay bat dau sai dinh dang hoac khong ton tai!\033[0m\n");
+            continue;
+        }
+
         printf("Nhap ngay ket thuc (YYYY-MM-DD): ");
         scanf(" %[^\n]", newEv.endDate);
-
-        if (strcmp(newEv.endDate, newEv.startDate) >= 0) {
-            break;
-        } else {
-            printf(">> Loi: Ngay ket thuc phai sau hoac bang ngay bat dau! Vui long nhap lai.\n");
+        if (!isValidDate(newEv.endDate)) {
+            printf("\033[1;31m>> Loi: Ngay ket thuc sai dinh dang hoac khong ton tai!\033[0m\n");
+            continue;
         }
+
+        if (strcmp(newEv.endDate, newEv.startDate) < 0) {
+            printf("\033[1;31m>> Loi: Ngay ket thuc phai sau hoac bang ngay bat dau!\033[0m\n");
+            continue;
+        }
+
+        int days = getDaysDifference(newEv.startDate, newEv.endDate);
+        if (days < 4) {
+            printf("\033[1;31m>> Loi: Su kien phai keo dai it nhat 4 ngay (Hien tai la %d ngay)!\033[0m\n", days);
+            continue;
+        }
+
+        if (checkOverlap(events, *count, newEv.startDate, newEv.endDate, NULL)) {
+            printf("\033[1;33m>> Loi: Thoi gian nay bi trung/chong cheo voi mot su kien khac da ton tai!\033[0m\n");
+            continue;
+        }
+
+        break; 
     }
     
     newEv.status = 0;
@@ -94,7 +189,6 @@ void editEvent(Event events[], int count) {
     printf("4. Ngay bat dau: %s\n", events[foundIndex].startDate);
     printf("5. Ngay ket thuc: %s\n", events[foundIndex].endDate);
 
-    
     printf("\nNhap ten moi: ");
     scanf(" %[^\n]", events[foundIndex].name);
     printf("Nhap mo ta moi: ");
@@ -105,18 +199,39 @@ void editEvent(Event events[], int count) {
     while (1) {
         printf("Nhap ngay bat dau moi (YYYY-MM-DD): ");
         scanf(" %[^\n]", events[foundIndex].startDate);
+        if (!isValidDate(events[foundIndex].startDate)) {
+            printf("\033[1;31m>> Loi: Ngay bat dau sai dinh dang hoac khong ton tai!\033[0m\n");
+            continue;
+        }
+
         printf("Nhap ngay ket thuc moi (YYYY-MM-DD): ");
         scanf(" %[^\n]", events[foundIndex].endDate);
-
-        if (strcmp(events[foundIndex].endDate, events[foundIndex].startDate) >= 0) {
-            break;
-        } else {
-            printf(">> Loi: Ngay ket thuc phai sau ngay bat dau!\n");
+        if (!isValidDate(events[foundIndex].endDate)) {
+            printf("\033[1;31m>> Loi: Ngay ket thuc sai dinh dang hoac khong ton tai!\033[0m\n");
+            continue;
         }
+
+        if (strcmp(events[foundIndex].endDate, events[foundIndex].startDate) < 0) {
+            printf("\033[1;31m>> Loi: Ngay ket thuc phai sau hoac bang ngay bat dau!\033[0m\n");
+            continue;
+        }
+
+        int days = getDaysDifference(events[foundIndex].startDate, events[foundIndex].endDate);
+        if (days < 4) {
+            printf("\033[1;31m>> Loi: Su kien phai keo dai it nhat 4 ngay (Hien tai la %d ngay)!\033[0m\n", days);
+            continue;
+        }
+
+        if (checkOverlap(events, count, events[foundIndex].startDate, events[foundIndex].endDate, events[foundIndex].eventId)) {
+            printf("\033[1;33m>> Loi: Thoi gian moi bi trung lich voi su kien khac trong he thong!\033[0m\n");
+            continue;
+        }
+
+        break;
     }
 
     printf(">> Thanh cong: Da cap nhat thong tin su kien %s.\n", searchId);
-	saveEvents(events, count);
+    saveEvents(events, count);
 }
 
 void updateEventStatus(Event events[], int count) {
