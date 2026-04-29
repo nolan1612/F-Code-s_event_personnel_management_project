@@ -87,12 +87,11 @@ gcc src/*.c -Iincludes -o main
 
 ├── src/                # Source code (.c)
 ├── includes/           # Header files (.h)
-├── data/               # Data files
+├── data/               # Data files (.dat)
 │   ├── events.dat
 │   └── accounts.dat
 ├── Makefile
 └── README.md
-
 ---
 
 ## System Design
