@@ -39,7 +39,11 @@ void runAdminMenu(Account *currentAcc, Account list[], int accountCount, Event e
     int choice;
     do {
         AdminMenu();
-        
+        printf("Enter your choice: ");
+        if (scanf("%d", &choice) != 1) {
+            while (getchar() != '\n');
+            choice = -1;
+        }
 
         switch(choice) {
             case 1: 
@@ -91,13 +95,13 @@ void runAdminMenu(Account *currentAcc, Account list[], int accountCount, Event e
                 displayAllEvents(eventList, *eventCount);
                 break;
             case 7: 
-                // eventDetail(eventList, *eventCount);
+                eventDetail(eventList, *eventCount);
                 break;
             case 8: 
                 // 8. Search events
                 break;
             case 9: 
-                // 9. View member participation history
+                viewMemberHistory(eventList, *eventCount);
                 break;
             case 10: 
                 changePassword(currentAcc);
