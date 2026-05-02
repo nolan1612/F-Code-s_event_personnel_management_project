@@ -8,6 +8,10 @@
 #include "../includes/report.h"
 #include "../includes/staff.h"
 #include "../includes/utils.h"
+int checkPassword(char ps[], Account *account);
+int Login(char mssv[], char ps[], Account list[], int accountCount) ;
+void changePassword(Account *currentAcc);
+int Logout(Account *currentAcc, Account list[], int accountCount);
 
 int checkPassword(char ps[], Account *account) {
     if (strcmp(ps, account->password) == 0) {
