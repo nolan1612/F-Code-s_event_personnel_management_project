@@ -512,3 +512,45 @@ void viewMemberHistory(Event events[], int count) {
     }
     printf("----------------------------------------------------------\n");
 }
+void viewJoinedEventsList(Event events[], int count, Account *currentAcc) {
+    int found = 0;
+    printf("\n===============================================\n");
+    printf("              JOINED EVENTS LIST               \n");
+    printf("===============================================\n");
+    printf("%-10s | %-20s | %-12s | %-12s | %-10s\n",
+           "Event ID", "Event Name", "Start Date", "End Date", "Role");
+    printf("--------------------------------------------------------------------------\n");
+    for (int i = 0; i < count; i++) {
+        for (int j = 0; j < events[i].staffCount; j++) {
+            if (strcmp(events[i].staffList[j].studentId,
+                       currentAcc->studentid) == 0) {
+                char roleStr[20];
+                if (events[i].staffList[j].role == 0) {
+                    strcpy(roleStr, "Leader");
+                }
+                else if (events[i].staffList[j].role == 1) {
+                    strcpy(roleStr, "Member");
+                }
+                else if (events[i].staffList[j].role == 2) {
+                    strcpy(roleStr, "Support");
+                }
+                else {
+                    strcpy(roleStr, "Unknown");
+                }
+                printf("%-10s | %-20s | %-12s | %-12s | %-10s\n",
+                       events[i].eventId,
+                       events[i].name,
+                       events[i].startDate,
+                       events[i].endDate,
+                       roleStr);
+
+                found = 1;
+                break;
+            }
+        }
+    }
+    if (!found) {
+        printf(">> Notice: You have not joined any events yet.\n");
+    }
+    printf("--------------------------------------------------------------------------\n");
+}
