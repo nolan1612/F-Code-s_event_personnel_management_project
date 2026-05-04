@@ -133,7 +133,7 @@ void runMemberMenu(Account *currentAcc, Account list[], int accountCount, Event 
                 viewJoinedEventsList(eventList, eventCount, currentAcc);
                 break;
             case 3:
-                // 3. View details of joined events
+                viewJoinedEventDetails(eventList, eventCount, currentAcc);
                 break;
             case 4:
                 // 4. View participation history

@@ -574,3 +574,107 @@ void viewJoinedEventsList(Event events[], int count, Account *currentAcc) {
     }
     printf("----------------------------------------------------------------------------------------------------\n");
 }
+void viewJoinedEventDetails(Event events[], int count, Account *currentAcc) {
+    char eventId[15];
+    int foundIndex = -1;
+    int joined = 0;
+    int attempts = 3;
+    printf("\n--- VIEW DETAILS OF JOINED EVENT ---\n");
+    while (attempts > 0) {
+        printf("Enter Event ID: ");
+        scanf(" %[^\n]", eventId);
+        foundIndex = -1;
+        joined = 0;
+        for (int i = 0; i < count; i++) {
+
+            if (strcmp(events[i].eventId, eventId) == 0) {
+
+                foundIndex = i;
+
+                for (int j = 0; j < events[i].staffCount; j++) {
+
+                    if (strcmp(events[i].staffList[j].studentId,
+                               currentAcc->studentid) == 0) {
+
+                        joined = 1;
+                        break;
+                    }
+                }
+
+                break;
+            }
+        }
+        if (foundIndex == -1) {
+
+            attempts--;
+
+            if (attempts > 0) {
+
+                printf(">> Error: Event ID not found! %d attempt(s) left.\n",
+                       attempts);
+
+            } else {
+
+                printf(">> Error: Maximum attempts reached.\n");
+                return;
+            }
+        }
+        else if (!joined) {
+
+            printf(">> Error: You are not assigned to this event.\n");
+            return;
+        }
+        else {
+            break;
+        }
+    }
+    Event ev = events[foundIndex];
+    char statusStr[20];
+    switch (ev.status) {
+        case 0:
+            strcpy(statusStr, "Not started");
+            break;
+        case 1:
+            strcpy(statusStr, "Ongoing");
+            break;
+
+        case 2:
+            strcpy(statusStr, "Finished");
+            break;
+        default:
+            strcpy(statusStr, "Unknown");
+    }
+    printf("\n============================================================\n");
+    printf("                    EVENT DETAILS                           \n");
+    printf("============================================================\n");
+    printf("Event ID    : %s\n", ev.eventId);
+    printf("Event Name  : %s\n", ev.name);
+    printf("Description : %s\n", ev.description);
+    printf("Location    : %s\n", ev.location);
+    printf("Start Date  : %s\n", ev.startDate);
+    printf("End Date    : %s\n", ev.endDate);
+    printf("Status      : %s\n", statusStr);
+    printf("\n==================== STAFF LIST ============================\n");
+    printf("%-15s | %-15s\n", "Student ID", "Role");
+    printf("------------------------------------------------------------\n");
+    for (int i = 0; i < ev.staffCount; i++) {
+        char roleStr[20];
+        switch (ev.staffList[i].role) {
+            case 0:
+                strcpy(roleStr, "Leader");
+                break;
+            case 1:
+                strcpy(roleStr, "Member");
+                break;
+            case 2:
+                strcpy(roleStr, "Support");
+                break;
+            default:
+                strcpy(roleStr, "Unknown");
+        }
+        printf("%-15s | %-15s\n",
+               ev.staffList[i].studentId,
+               roleStr);
+    }
+    printf("============================================================\n");
+}
