@@ -10,46 +10,6 @@
 #include "../includes/staff.h"
 #include "../includes/utils.h"
 
-
-int isValidDate(const char* date) {
-    if (strlen(date) != 10) return 0;
-    if (date[4] != '-' || date[7] != '-') return 0;
-    
-    int year, month, day;
-    if (sscanf(date, "%d-%d-%d", &year, &month, &day) != 3) return 0;
-    
-    if (year < 1900 || year > 2100) return 0; 
-    if (month < 1 || month > 12) return 0;
-    if (day < 1 || day > 31) return 0;
-    
-    int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
-        daysInMonth[2] = 29;
-    }
-    
-    if (day > daysInMonth[month]) return 0;
-    return 1;
-}
-
-int getDaysDifference(const char* start, const char* end) {
-    struct tm tm_start = {0};
-    struct tm tm_end = {0};
-
-    sscanf(start, "%d-%d-%d", &tm_start.tm_year, &tm_start.tm_mon, &tm_start.tm_mday);
-    sscanf(end, "%d-%d-%d", &tm_end.tm_year, &tm_end.tm_mon, &tm_end.tm_mday);
-
-    tm_start.tm_year -= 1900;
-    tm_start.tm_mon -= 1;
-    tm_end.tm_year -= 1900;
-    tm_end.tm_mon -= 1;
-
-    time_t time_start = mktime(&tm_start);
-    time_t time_end = mktime(&tm_end);
-
-    double seconds = difftime(time_end, time_start);
-    return (int)(seconds / (60 * 60 * 24)); 
-}
-
 int checkOverlap(Event events[], int count, const char* newStart, const char* newEnd, const char* ignoreEventId) {
     for (int i = 0; i < count; i++) {
         if (ignoreEventId != NULL && strcmp(events[i].eventId, ignoreEventId) == 0) {
@@ -92,21 +52,13 @@ void createEvent(Event events[], int *count) {
     
     printf("Enter event location: ");
     scanf(" %[^\n]", newEv.location);
-    
-    while (1) {
-        printf("Enter start date (YYYY-MM-DD): ");
-        scanf(" %[^\n]", newEv.startDate);
-        if (!isValidDate(newEv.startDate)) {
-            printf("\033[1;31m>> Error: Start date is invalid or does not exist!\033[0m\n");
-            continue;
-        }
 
-        printf("Enter end date (YYYY-MM-DD): ");
-        scanf(" %[^\n]", newEv.endDate);
-        if (!isValidDate(newEv.endDate)) {
-            printf("\033[1;31m>> Error: End date is invalid or does not exist!\033[0m\n");
-            continue;
-        }
+    while (1) {
+        printf("Enter start date (YYYY-MM-DD or YYYY/MM/DD): ");
+        inputValidFormatDate(newEv.startDate);
+
+        printf("Enter end date (YYYY-MM-DD or YYYY/MM/DD): ");
+        inputValidFormatDate(newEv.endDate);
 
         if (strcmp(newEv.endDate, newEv.startDate) < 0) {
             printf("\033[1;31m>> Error: End date must be after or equal to start date!\033[0m\n");
@@ -124,7 +76,7 @@ void createEvent(Event events[], int *count) {
             continue;
         }
 
-        break; 
+        break;
     }
     
     newEv.status = 0;
@@ -191,33 +143,20 @@ void editEvent(Event events[], int count) {
     scanf(" %[^\n]", events[foundIndex].description);
     printf("Enter new location: ");
     scanf(" %[^\n]", events[foundIndex].location);
-    
     while (1) {
-        printf("Enter new start date (YYYY-MM-DD): ");
-        scanf(" %[^\n]", events[foundIndex].startDate);
-        if (!isValidDate(events[foundIndex].startDate)) {
-            printf("\033[1;31m>> Error: Start date is invalid or does not exist!\033[0m\n");
-            continue;
-        }
-
-        printf("Enter new end date (YYYY-MM-DD): ");
-        scanf(" %[^\n]", events[foundIndex].endDate);
-        if (!isValidDate(events[foundIndex].endDate)) {
-            printf("\033[1;31m>> Error: End date is invalid or does not exist!\033[0m\n");
-            continue;
-        }
-
+        printf("Enter new start date (YYYY-MM-DD or YYYY/MM/DD): ");
+        inputValidFormatDate(events[foundIndex].startDate);
+        printf("Enter new end date (YYYY-MM-DD or YYYY/MM/DD): ");
+        inputValidFormatDate(events[foundIndex].endDate);
         if (strcmp(events[foundIndex].endDate, events[foundIndex].startDate) < 0) {
             printf("\033[1;31m>> Error: End date must be after or equal to start date!\033[0m\n");
             continue;
         }
-
         int days = getDaysDifference(events[foundIndex].startDate, events[foundIndex].endDate);
         if (days < 4) {
             printf("\033[1;31m>> Error: Event must last at least 4 days (Currently %d days)!\033[0m\n", days);
             continue;
         }
-
         if (checkOverlap(events, count, events[foundIndex].startDate, events[foundIndex].endDate, events[foundIndex].eventId)) {
             printf("\033[1;33m>> Error: New time overlaps with another event in the system!\033[0m\n");
             continue;
@@ -225,7 +164,6 @@ void editEvent(Event events[], int count) {
 
         break;
     }
-
     printf(">> Success: Updated information for event %s.\n", searchId);
     saveEvents(events, count);
 }
