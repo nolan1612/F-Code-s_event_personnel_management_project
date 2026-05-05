@@ -39,8 +39,6 @@ void event_detail(Event list[], int countEvent)
     printf("Enter the event code you want to view details for (e.g., EV000001) or the event name:");
     scanf(" %[^\n]", eId);
 
-
-
     int Index = search_events(list, countEvent, eId);
 
     if (Index != -1)
@@ -77,36 +75,34 @@ void event_detail(Event list[], int countEvent)
                 printf("|=========================================|\n");
                 printf("|       LIST OF STAFF FOR THE EVENT       |\n");
                 printf("|=========================================|\n");
+                printf("|Name                   |ID                     |Role                      |Responsibilities\n");  
 
                 for (int i = 0; i < list[Index].staffCount; i++)
                 {   
-        
-                    printf("|\t\t%s\t\t", list[Index].staffList[i].studentName);
+                    printf("|%s\t\t\t\t", list[Index].staffList[i].studentName);
 
-                    printf("|\t\t%s\n", list[Index].staffList[i].studentId);
+                    printf("|%s\t\t\t\t", list[Index].staffList[i].studentId);
 
-                    printf("| Role: ");
                     if (list[Index].staffList[i].role == 0)
                         {
-                            printf("BCN\n");
+                            printf("|BCN\t\t\t\t");
                         } else if (list[Index].staffList[i].role == 1)
                             {
-                                printf("Member\n");
+                                printf("|Member\t\t\t\t");
                             } else if (list[Index].staffList[i].role == 2)
                                 {
-                                    printf("Support\n");
+                                    printf("|Support\t\t\t\t");
                                 } else 
                                     {
-                                        printf("Unassigned\n");
+                                        printf("|Unassigned\t\t\t\t");
                                     }
 
-                    printf("| Responsibilities: ");
                     if (strlen(list[Index].staffList[i].description) == 0)
                         {
-                            printf("No responsibilities assigned\n");
+                            printf("|No responsibilities assigned\n");
                         } else
                             {
-                                printf("%s\n", list[Index].staffList[i].description);
+                                printf("|%s\n", list[Index].staffList[i].description);
                             }
                 }
             }  
@@ -143,33 +139,38 @@ void create_file(Event list[], int countEvent)
             fprintf(fptr, "No staff have been assigned to this event yet!\n");
         } else
             {   
-                printf("|=========================================|\n");
-                printf("|       LIST OF STAFF FOR THE EVENT       |\n");
-                printf("|=========================================|\n");
+                fprintf(fptr, "|=========================================|\n");
+                fprintf(fptr, "|       LIST OF STAFF FOR THE EVENT       |\n");
+                fprintf(fptr, "|=========================================|\n");
+                fprintf(fptr, "|Name                   |ID                     |Role                      |Responsibilities\n");
+
                 for (int i = 0; i < list[Index].staffCount; i++)
                 {   
-                    fprintf(fptr, "Name: %s | Student ID: %s | Role: ", list[Index].staffList[i].studentName, list[Index].staffList[i].studentId);
+
+                    fprintf(fptr, "|%s\t\t\t\t", list[Index].staffList[i].studentName);
+
+                    fprintf(fptr, "|%s\t\t\t\t", list[Index].staffList[i].studentId);
+
                     if (list[Index].staffList[i].role == 0)
                         {
-                            fprintf(fptr, "BCN\n");
+                            fprintf(fptr, "|BCN\t\t\t\t");
                         } else if (list[Index].staffList[i].role == 1)
                             {
-                                fprintf(fptr, "Member\n");
+                                fprintf(fptr, "|Member\t\t\t\t");
                             } else if (list[Index].staffList[i].role == 2)
                                 {
-                                    fprintf(fptr, "Support\n");
+                                    fprintf(fptr, "|Support\t\t\t\t");
                                 } else 
                                     {
-                                        fprintf(fptr, "Unassigned\n");
+                                        fprintf(fptr, "|Unassigned\t\t\t\t");
                                     }
 
-                    fprintf(fptr, "Responsibilities: ");
                     if (strlen(list[Index].staffList[i].description) == 0)
                         {
-                            fprintf(fptr, "No responsibilities assigned\n");
+                            fprintf(fptr, "|No responsibilities assigned\n");
                         } else
                             {
-                                fprintf(fptr, "%s\n", list[Index].staffList[i].description);
+                                fprintf(fptr, "|%s\n", list[Index].staffList[i].description);
                             }
                 }
             }  
