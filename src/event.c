@@ -678,3 +678,72 @@ void viewJoinedEventDetails(Event events[], int count, Account *currentAcc) {
     }
     printf("============================================================\n");
 }
+void viewMyParticipationHistory(Event events[], int count, Account *currentAcc) {
+    static int historyIndexes[MAX_EVENTS];
+    int historyCount = 0;
+    for (int i = 0; i < count; i++) {
+        if (events[i].status != 2) {
+            continue;
+        }
+        for (int j = 0; j < events[i].staffCount; j++) {
+            if (strcmp(events[i].staffList[j].studentId,
+                       currentAcc->studentid) == 0) {
+                historyIndexes[historyCount++] = i;
+                break;
+            }
+        }
+    }
+    for (int i = 0; i < historyCount - 1; i++) {
+        for (int j = i + 1; j < historyCount; j++) {
+            if (strcmp(events[historyIndexes[i]].endDate,
+                       events[historyIndexes[j]].endDate) < 0) {
+                int temp = historyIndexes[i];
+                historyIndexes[i] = historyIndexes[j];
+                historyIndexes[j] = temp;
+            }
+        }
+    }
+    printf("\n====================================================================================\n");
+    printf("                           PARTICIPATION HISTORY                                    \n");
+    printf("====================================================================================\n");
+    printf("%-25s | %-22s | %-10s | %-15s\n",
+           "Event Name",
+           "Event Date",
+           "Role",
+           "Status");
+    printf("------------------------------------------------------------------------------------\n");
+    if (historyCount == 0) {
+        printf(">> Notice: No participation history found.\n");
+    }
+    for (int i = 0; i < historyCount; i++) {
+        Event *ev = &events[historyIndexes[i]];
+        char roleStr[20];
+        strcpy(roleStr, "Unknown");
+        for (int j = 0; j < ev->staffCount; j++) {
+            if (strcmp(ev->staffList[j].studentId,
+                       currentAcc->studentid) == 0) {
+                switch (ev->staffList[j].role) {
+                    case 0:
+                        strcpy(roleStr, "Leader");
+                        break;
+                    case 1:
+                        strcpy(roleStr, "Member");
+                        break;
+                    case 2:
+                        strcpy(roleStr, "Support");
+                        break;
+                    default:
+                        strcpy(roleStr, "Unknown");
+                }
+                break;
+            }
+        }
+        printf("%-25s | %s to %s | %-10s | %-15s\n",
+               ev->name,
+               ev->startDate,
+               ev->endDate,
+               roleStr,
+               "Finished");
+    }
+    printf("------------------------------------------------------------------------------------\n");
+}
