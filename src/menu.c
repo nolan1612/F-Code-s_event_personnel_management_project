@@ -136,7 +136,7 @@ void runMemberMenu(Account *currentAcc, Account list[], int accountCount, Event 
                 viewJoinedEventDetails(eventList, eventCount, currentAcc);
                 break;
             case 4:
-                // 4. View participation history
+                viewMyParticipationHistory(eventList, eventCount, currentAcc);
                 break;
             case 5:
                 changePassword(currentAcc);
