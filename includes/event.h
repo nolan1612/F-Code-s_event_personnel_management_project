@@ -35,4 +35,7 @@ void deleteEvent(Event events[], int *count);
 void displayAllEvents(Event events[], int count);
 void viewMemberProfile(Account *currentAcc);
 void viewMemberHistory(Event events[], int count);
+void viewJoinedEventsList(Event events[], int count, Account *currentAcc);
+void viewJoinedEventDetails(Event events[], int count, Account *currentAcc);
+void viewMyParticipationHistory(Event events[], int count, Account *currentAcc);
 #endif
