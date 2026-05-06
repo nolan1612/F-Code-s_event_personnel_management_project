@@ -5,6 +5,8 @@
 #include "../includes/report.h"
 #include "../includes/staff.h"
 #include "../includes/utils.h"
+#include "../includes/request.h"
+
 void AdminMenu() {
     printf("\n=========================================\n");
     printf("            ADMIN MENU                   \n");
@@ -19,6 +21,7 @@ void AdminMenu() {
     printf("8. Search events\n");
     printf("9. View member participation history\n");
     printf("10. Change password\n");
+    printf("11. See the request to unlock\n");
     printf("0. Logout\n");
     printf("=========================================\n");
 }
@@ -32,6 +35,7 @@ void MemberMenu() {
     printf("3. Xem chi tiet su kien minh tham gia\n");
     printf("4. Xem lich su su kien da tham gia\n");
     printf("5. Doi mat khau\n");
+    printf("6. Gui yeu cau mo khoa\n");
     printf("0. Dang xuat\n");
     printf("=========================================\n");
 }
@@ -107,6 +111,10 @@ void runAdminMenu(Account *currentAcc, Account list[], int accountCount, Event e
                 changePassword(currentAcc);
                 saveAccounts(list, accountCount);
                 break;
+            case 11:
+                viewUnlockRequests(list, accountCount);
+                saveAccounts(list, accountCount);
+                break;
             case 0: 
                 printf("\n>> Logged out successfully\n"); 
                 break;
@@ -141,6 +149,9 @@ void runMemberMenu(Account *currentAcc, Account list[], int accountCount, Event 
             case 5:
                 changePassword(currentAcc);
                 saveAccounts(list, accountCount);
+                break;
+            case 6:
+                sendUnlockRequest(currentAcc);
                 break;
             case 0:
                 printf("\n>> Logged out successfully\n");
