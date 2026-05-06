@@ -12,6 +12,7 @@ int checkPassword(char ps[], Account *account);
 int Login(char mssv[], char ps[], Account list[], int accountCount) ;
 void changePassword(Account *currentAcc);
 int Logout(Account *currentAcc, Account list[], int accountCount);
+void setUpEmail(Account *account);
 
 int checkPassword(char ps[], Account *account) {
     if (strcmp(ps, account->password) == 0) {
@@ -128,4 +129,21 @@ int Logout(Account *currentAcc, Account list[], int accountCount) {
         printf(">> Logout canceled.\n");
         return 0;
     }
+}
+void setUpEmail(Account *account, Account list[], int accountCount){
+    printf("===Setup Email==="\n);
+    printf("Your email doesn't exitst yet. Pls, create one to use when forget password");
+    char email[100];
+    while(1){
+    printf("Input new email :");
+    scanf(" %[^\n]", email);
+        if(isValidEmail(email)){
+        break;
+        }
+        printf("Invalid email! Please try again.\n"); 
+    }
+    strncpy(account->email, email, sizeof(account->email) - 1);
+    account->email[sizeof(account->email) - 1] = '\0';
+    saveAccounts(list, accountCount);
+    printf("Succesfully"\n);
 }
