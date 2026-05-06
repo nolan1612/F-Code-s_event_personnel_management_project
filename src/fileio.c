@@ -28,10 +28,11 @@ void saveAccounts(Account list[], int count) {
     
     for (int i = 0; i < count; i++) {
        
-        fprintf(file, "%s %s %s %d %d %d\n", 
+        fprintf(file, "%s %s %s %s %d %d %d\n", 
                 list[i].studentid, 
                 list[i].username,
                 list[i].password, 
+                list[i].email,
                 list[i].role, 
                 list[i].isLocked, 
                 list[i].failCount);
@@ -81,10 +82,11 @@ int loadAccounts(Account list[]) {
     
     int count = 0;
 
-    while (fscanf(file, "%s %s %s %d %d %d", 
+    while (fscanf(file, "%s %s %s %s %d %d %d", 
                   list[count].studentid, 
                   list[count].username,   
                   list[count].password, 
+                  list[count].email,
                   &list[count].role, 
                   &list[count].isLocked, 
                   &list[count].failCount) == 6) { 
