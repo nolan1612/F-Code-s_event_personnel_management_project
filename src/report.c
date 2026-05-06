@@ -6,7 +6,7 @@
 #include "../includes/report.h"
 
 
-int search_events(Event list[], int countEvent, char eIdorName[])
+int eventSearch(Event list[], int countEvent, char eIdorName[])
 {   
     int Index = -1;
 
@@ -16,90 +16,120 @@ int search_events(Event list[], int countEvent, char eIdorName[])
         {
             Index = i;
 
-            printf("Ma su kien la: %s\n", list[i].eventId);
-            printf("Ten su kien la: %s\n", list[i].name);
-            printf("Trang thai su kien: %d\n", list[i].status);
+            printf("The event code is: %s\n", list[i].eventId);
+            printf("The event name is: %s\n", list[i].name);
 
+        if (list[i].status == 0)
+        {
+            printf("Event Status: Not Started\n");
+        } else if (list[i].status == 1)
+            {
+                printf("Event Status: Ongoing\n");
+            } else if (list[i].status == 2)
+                {
+                    printf("Event Status: Completed\n");
+                } else 
+                    {
+                        printf("Event Status: Unknown\n");
+                    }
             return Index;
         }
     }
 
     if (Index == -1)
     {
-        printf("Ma su kien nay khong ton tai!\n");
+        printf("The event you are looking for does not exist!\n");
     }   
     
     return Index;
 }
 
 
-void event_detail(Event list[], int countEvent)
+void eventDetail(Event list[], int countEvent)
 {
     char eId[20];
-    printf("Nhap ma su kien can xem chi tiet (VD: EV000001) hoac ten su kien: ");
+    printf("Enter the event code you want to view details for (e.g., EV000001) or the event name: ");
     scanf(" %[^\n]", eId);
 
 
 
-    int Index = search_events(list, countEvent, eId);
+    int Index = eventSearch(list, countEvent, eId);
 
     if (Index != -1)
     {
         printf("|===============================|\n");
-        printf("|       THONG TIN SU KIEN       |\n");
+        printf("|       EVENT DETAILS       |\n");
         printf("|===============================|\n");
 
         printf("\n|===============================================================|\n");
-        printf("Ma su kien                   :%s\n", list[Index].eventId);
-        printf("Ten su kien                  :%s\n", list[Index].name);
-        printf("Mo ta su kien                :%s\n", list[Index].description);
-        printf("Dia diem su kien             :%s\n", list[Index].location);
-        printf("Ngay bat dau su kien         :%s\n", list[Index].startDate);
-        printf("Ngay ket thuc su kien        :%s\n", list[Index].endDate);
-        printf("Trang thai su kien           :%d\n", list[Index].status);
+        printf("Event Code                   :%s\n", list[Index].eventId);
+        printf("Event Name                   :%s\n", list[Index].name);
+        printf("Event Description            :%s\n", list[Index].description);
+        printf("Event Location               :%s\n", list[Index].location);
+        printf("Event Start Date             :%s\n", list[Index].startDate);
+        printf("Event End Date               :%s\n", list[Index].endDate);
+
+        if (list[Index].status == 0)
+        {
+            printf("Event Status                 :Not Started\n");
+        } else if (list[Index].status == 1)
+            {
+                printf("Event Status                 :Ongoing\n");
+            } else if (list[Index].status == 2)
+                {
+                    printf("Event Status                 :Completed\n");
+                } else 
+                    {
+                        printf("Event Status                 :Unknown\n");
+                    }
+
         printf("|=================================================================|\n");
     }
 
     printf("|=======================================|\n");
-    printf("|     DANH SACH NHAN SU CUA SU KIEN     |\n");
+    printf("|     EVENT PARTICIPANTS LIST           |\n");
     printf("|=======================================|\n");
         
     if (list[Index].staffCount == 0)
         {
-            printf(">> Thong bao: Su kien chua co nhan su nao!\n");
+            printf(">> Announcement: No staff have been assigned to this event yet!\n");
             return;
         } else
-            {
+            {      
+
+                printf("|=========================================|\n");
+                printf("|       LIST OF STAFF FOR THE EVENT       |\n");
+                printf("|=========================================|\n");
+                printf("|Name                   |ID                     |Role                      |Responsibilities\n");  
+
                 for (int i = 0; i < list[Index].staffCount; i++)
-                {
-                    printf(" Ho va Ten: %s\n", list[Index].staffList[i].studentName);
+                {   
+                    printf("|%s\t\t\t\t", list[Index].staffList[i].studentName);
 
-                    printf(" Ma so sinh vien: %s\n", list[Index].staffList[i].studentId);
+                    printf("|%s\t\t\t\t", list[Index].staffList[i].studentId);
 
-                    printf(" Vai tro: ");
-                    
                     if (list[Index].staffList[i].role == 0)
                         {
-                            printf("BCN\n");
+                            printf("|BCN\t\t\t\t");
                         } else if (list[Index].staffList[i].role == 1)
                             {
-                                printf("Member\n");
+                                printf("|Member\t\t\t\t");
                             } else if (list[Index].staffList[i].role == 2)
                                 {
-                                    printf("Support\n");
+                                    printf("|Support\t\t\t\t");
                                 } else 
                                     {
-                                        printf("Chua co vai tro\n");
+                                        printf("|Unassigned\t\t\t\t");
                                     }
 
-                    printf(" Nhiem vu: ");
                     if (strlen(list[Index].staffList[i].description) == 0)
                         {
-                            printf("Chua co nhiem vu\n");
+                            printf("|No responsibilities assigned\n");
                         } else
                             {
-                                printf("%s\n", list[Index].staffList[i].description);
+                                printf("|%s\n", list[Index].staffList[i].description);
                             }
                 }
             }  
 } 
+  
