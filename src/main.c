@@ -55,20 +55,17 @@ int main() {
                     saveAccounts(list, accountCount); 
                     break;
                 } else if (status == -1) {
-    
-            saveAccounts(list, accountCount);
-            
-        } else if (status == -2) {
-        
-            break;
-            
-        } else if (status == -3) {
-            
-            saveAccounts(list, accountCount);
-            break;
-        }
-                return 0;
+                    
+                    saveAccounts(list, accountCount);
+                } else if (status == -2) {
+                    
+                    break;
+                } else if (status == -3) {
+                
+                    saveAccounts(list, accountCount);
+                    break;
+                }
             }
-        }
+        } 
     }
 }
