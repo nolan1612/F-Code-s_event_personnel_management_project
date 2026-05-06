@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include <ctype.h>
 #include "../includes/auth.h"
 #include "../includes/event.h"
@@ -13,10 +14,12 @@ void clearBuffer();
 void trimNewLine(char str[]);
 int validInput(int min, int max);
 int containsIgnoreCase(char str[], char strSub[]);
-int isLeapYear(int year);
-int isValidDate(int year, int month, int day);
-void inputValidFormatDate(char str[]);
 int confirmAction( char message[]);
+int isLeapYear(int year);
+int isValidDateNum(int year, int month, int day);
+int isValidDateStr(const char* date);
+int getDaysDifference(const char* start, const char* end);
+void inputValidFormatDate(char str[]);
 void clearBuffer() {
     while (getchar() != '\n');
 }
@@ -66,19 +69,46 @@ int isLeapYear(int year){
     return 0;
 }
 
-int isValidDate(int year, int month, int day){
-    if(year < 2000 || year > 2100) return 0;
-    if(month < 1 || month > 13) return 0;
-    if(day < 1) return 0;
+int isValidDateNum(int year, int month, int day){
+    if(year < 1900 || year > 2100) return 0; 
+    if(month < 1 || month > 12) return 0; 
+    if(day < 1 || day > 31) return 0;
 
     int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    if (isLeapYear(year) == 1) {
+    if (isLeapYear(year)) {
         daysInMonth[2] = 29;
     }
     if (day > daysInMonth[month]) {
         return 0; 
     }
     return 1;
+}
+int isValidDateStr(const char* date) {
+    if (strlen(date) != 10) return 0;
+    if (date[4] != '-' || date[7] != '-') return 0;
+    
+    int year, month, day;
+    if (sscanf(date, "%d-%d-%d", &year, &month, &day) != 3) return 0;
+    
+    return isValidDateNum(year, month, day);
+}
+int getDaysDifference(const char* start, const char* end) {
+    struct tm tm_start = {0};
+    struct tm tm_end = {0};
+
+    sscanf(start, "%d-%d-%d", &tm_start.tm_year, &tm_start.tm_mon, &tm_start.tm_mday);
+    sscanf(end, "%d-%d-%d", &tm_end.tm_year, &tm_end.tm_mon, &tm_end.tm_mday);
+
+    tm_start.tm_year -= 1900;
+    tm_start.tm_mon -= 1;
+    tm_end.tm_year -= 1900;
+    tm_end.tm_mon -= 1;
+
+    time_t time_start = mktime(&tm_start);
+    time_t time_end = mktime(&tm_end);
+
+    long long seconds = (long long)difftime(time_end, time_start);
+    return (int)(seconds / (60 * 60 * 24)); 
 }
 void inputValidFormatDate(char str[]){
     char buffer[100];
@@ -87,28 +117,32 @@ void inputValidFormatDate(char str[]){
     while(1){
         scanf(" %[^\n]", buffer);
         clearBuffer();
-        strcpy(buffer, tempBuffer);
+        strcpy(tempBuffer, buffer); 
+
         char *token;
         int part[3];
         int cnt = 0;
-        token = strtok(tempBuffer, "/");
+        
+        token = strtok(tempBuffer, "/-");
         while(token != NULL && cnt < 3){
             part[cnt] = atoi(token);
             cnt++;
-            token = strtok(NULL, "/");
+            token = strtok(NULL, "/-");
         }
+        
         if(cnt == 3){
             year = part[0];
             month = part[1];
             day = part[2];
-            if(isValidDate(year, month, day)){
-                strcpy(str,buffer);
+            
+            if(isValidDateNum(year, month, day)){
+                sprintf(str, "%04d-%02d-%02d", year, month, day);
                 return;
-            }else{
-                printf(">> Error: It doesn't exist in reality today! Please re-enter (YYYY/MM/DD):");
+            } else {
+                printf(">> Error: It doesn't exist in reality today! Please re-enter: ");
             }
         } else {
-          printf(">> Error: Invalid format! Please use YYYY/MM/DD (Ex: 2026/05/02): ");
+            printf(">> Error: Invalid format! Please use YYYY-MM-DD or YYYY/MM/DD: ");
         }
     }
 }

@@ -25,8 +25,6 @@ typedef struct {
 } Event;
 
 void generateEventId(char *dest, Event events[], int count);
-int getDaysDifference(const char* start, const char* end);
-int isValidDate(const char* date);
 int checkOverlap(Event events[], int count, const char* newStart, const char* newEnd, const char* ignoreEventId);
 void createEvent(Event events[], int *count);
 void editEvent(Event events[], int count);
@@ -35,4 +33,7 @@ void deleteEvent(Event events[], int *count);
 void displayAllEvents(Event events[], int count);
 void viewMemberProfile(Account *currentAcc);
 void viewMemberHistory(Event events[], int count);
+void viewJoinedEventsList(Event events[], int count, Account *currentAcc);
+void viewJoinedEventDetails(Event events[], int count, Account *currentAcc);
+void viewMyParticipationHistory(Event events[], int count, Account *currentAcc);
 #endif
