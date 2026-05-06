@@ -186,7 +186,6 @@ void editStaffRole(Event events[], int count) {
     scanf(" %[^\n]", events[foundIndex].staffList[staffIndex].description);
 
     printf(">> Success: Updated staff member %s in event %s.\n", mssvInput, searchId);
-
     saveEvents(events, count);
 }
 

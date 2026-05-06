@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "../includes/auth.h"
 #include "../includes/event.h"
 #include "../includes/menu.h"
@@ -5,6 +6,7 @@
 #include "../includes/report.h"
 #include "../includes/staff.h"
 #include "../includes/utils.h"
+
 void AdminMenu() {
     printf("\n=========================================\n");
     printf("            ADMIN MENU                   \n");
@@ -19,27 +21,30 @@ void AdminMenu() {
     printf("8. Search events\n");
     printf("9. View member participation history\n");
     printf("10. Change password\n");
+    printf("11. Setup/Update Email\n"); 
     printf("0. Logout\n");
     printf("=========================================\n");
 }
 
 void MemberMenu() {
     printf("\n=========================================\n");
-    printf("             THANH VIEN MENU             \n");
+    printf("             MEMBER MENU                 \n");
     printf("=========================================\n");
-    printf("1. Xem profile ca nhan\n");
-    printf("2. Xem danh sach su kien dang tham gia\n");
-    printf("3. Xem chi tiet su kien minh tham gia\n");
-    printf("4. Xem lich su su kien da tham gia\n");
-    printf("5. Doi mat khau\n");
-    printf("0. Dang xuat\n");
+    printf("1. View personal profile\n");
+    printf("2. View joined events list\n");
+    printf("3. View joined event details\n");
+    printf("4. View participation history\n");
+    printf("5. Change password\n");
+    printf("6. Setup/Update Email\n"); 
+    printf("0. Logout\n");
     printf("=========================================\n");
 }
+
 void runAdminMenu(Account *currentAcc, Account list[], int accountCount, Event eventList[], int *eventCount) {
     int choice;
     do {
         AdminMenu();
-        printf("Enter your choice: ");
+        printf("Enter your choice (0-11): ");
         if (scanf("%d", &choice) != 1) {
             while (getchar() != '\n');
             choice = -1;
@@ -90,7 +95,7 @@ void runAdminMenu(Account *currentAcc, Account list[], int accountCount, Event e
                     }
                 } while (subChoice != 0);
                 break;
-        	}
+            }
             case 6: 
                 displayAllEvents(eventList, *eventCount);
                 break;
@@ -107,19 +112,26 @@ void runAdminMenu(Account *currentAcc, Account list[], int accountCount, Event e
                 changePassword(currentAcc);
                 saveAccounts(list, accountCount);
                 break;
+            case 11: 
+                setupEmail(currentAcc, list, accountCount);
+                break;
             case 0: 
-                printf("\n>> Logged out successfully\n"); 
+                if (Logout(currentAcc, list, accountCount) == 1) {
+                    return; 
+                }
+                choice = -1; 
                 break;
             default: 
                 printf(">> Error: Invalid choice. Please try again!\n");
         }
     } while (choice != 0); 
 }
+
 void runMemberMenu(Account *currentAcc, Account list[], int accountCount, Event eventList[], int eventCount) {
     int choice;
     do {
         MemberMenu();
-        printf("Enter your choice (0-5): ");
+        printf("Enter your choice (0-6): ");
         if (scanf("%d", &choice) != 1) {
             while (getchar() != '\n');
             choice = -1;
@@ -142,8 +154,14 @@ void runMemberMenu(Account *currentAcc, Account list[], int accountCount, Event 
                 changePassword(currentAcc);
                 saveAccounts(list, accountCount);
                 break;
+            case 6:
+                setupEmail(currentAcc, list, accountCount);
+                break;
             case 0:
-                printf("\n>> Logged out successfully\n");
+                if (Logout(currentAcc, list, accountCount) == 1) {
+                    return; 
+                }
+                choice = -1;
                 break;
             default:
                 printf(">> Error: Invalid choice. Please try again!\n");
