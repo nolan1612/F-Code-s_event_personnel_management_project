@@ -4,7 +4,8 @@
 
 #include "event.h"
 
-int search_events(Event list[], int countEvent, char eId[]);
-void event_detail(Event list[], int countEvent);
+int eventSearch(Event list[], int countEvent, char eIdorName[]);
+void eventDetail(Event list[], int countEvent);
+void createFile(Event list[], int countEvent);
 
 #endif

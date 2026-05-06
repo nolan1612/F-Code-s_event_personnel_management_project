@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include "../includes/event.h"
 #include "../includes/report.h"
 
 
-int search_events(Event list[], int countEvent, char eIdorName[])
+int eventSearch(Event list[], int countEvent, char eIdorName[])
 {   
     int Index = -1;
 
@@ -16,9 +15,22 @@ int search_events(Event list[], int countEvent, char eIdorName[])
         {
             Index = i;
 
-            printf("Ma su kien la: %s\n", list[i].eventId);
-            printf("Ten su kien la: %s\n", list[i].name);
-            printf("Trang thai su kien: %d\n", list[i].status);
+            printf("The event code: %s\n", list[i].eventId);
+            printf("The event name: %s\n", list[i].name);
+
+            if (list[i].status == 0)
+            {
+                printf("the event status: Not Start\n");
+            } else if (list[i].status == 1)
+                    {
+                        printf("the event status: Ongoing\n");
+                    } else if (list[i].status == 2)
+                            {
+                                printf("the event status: Complete\n");
+                            } else 
+                                {
+                                    printf("the event status: Unknown\n");
+                                }
 
             return Index;
         }
@@ -26,20 +38,20 @@ int search_events(Event list[], int countEvent, char eIdorName[])
 
     if (Index == -1)
     {
-        printf("Ma su kien nay khong ton tai!\n");
+        printf("The event code or name you entered does not exist!\n");
     }   
     
     return Index;
 }
 
 
-void event_detail(Event list[], int countEvent)
+void eventDetail(Event list[], int countEvent)
 {
     char eId[20];
     printf("Enter the event code you want to view details for (e.g., EV000001) or the event name:");
     scanf(" %[^\n]", eId);
 
-    int Index = search_events(list, countEvent, eId);
+    int Index = eventSearch(list, countEvent, eId);
 
     if (Index != -1)
     {
@@ -60,7 +72,21 @@ void event_detail(Event list[], int countEvent)
         printf("|=======================|===========================================|\n");
         printf("|\tEvent End Date   \t|%s\n", list[Index].endDate);
         printf("|=======================|===========================================|\n");
-        printf("|\tEvent Status     \t|%d\n", list[Index].status);
+        
+        if (list[Index].status == 0)
+            {
+                printf("|\tEvent Status     \t|Not Started\n");
+            } else if (list[Index].status == 1)
+                {
+                    printf("|\tEvent Status     \t|Ongoing\n");
+                } else if (list[Index].status == 2)
+                    {
+                        printf("|\tEvent Status     \t|Completed\n");
+                    } else 
+                        {
+                            printf("|\tEvent Status     \t|Unknown\n");
+                        }
+
         printf("|=======================|===========================================|\n");
     }
 
@@ -109,7 +135,7 @@ void event_detail(Event list[], int countEvent)
 }
 
 
-void create_file(Event list[], int countEvent)
+void createFile(Event list[], int countEvent)
 {
     FILE *fptr;
     fptr = fopen("report.txt", "w");
@@ -132,7 +158,20 @@ void create_file(Event list[], int countEvent)
         fprintf(fptr, "Event Location: %s\n", list[Index].location);
         fprintf(fptr, "Event Start Date: %s\n", list[Index].startDate);
         fprintf(fptr, "Event End Date: %s\n", list[Index].endDate);
-        fprintf(fptr, "Event Status: %d\n", list[Index].status);
+
+        if (list[Index].status == 0)
+            {
+                fprintf(fptr, "the event status: Not Start\n");
+            } else if (list[Index].status == 1)
+                    {
+                        fprintf(fptr, "the event status: Ongoing\n");
+                    } else if (list[Index].status == 2)
+                            {
+                                fprintf(fptr, "the event status: Complete\n");
+                            } else 
+                                {
+                                    fprintf(fptr, "the event status: Unknown\n");
+                                }
 
         if (list[Index].staffCount == 0)
         {
