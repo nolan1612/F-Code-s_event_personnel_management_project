@@ -12,7 +12,7 @@ int eventSearch(Event list[], int countEvent, char eIdorName[])
 
     for (int i = 0; i < countEvent; i++)
     {
-        if (stricmp(list[i].eventId, eIdorName) == 0 || strcasecmp(list[i].name, eIdorName) == 0)
+        if (strcmp(list[i].eventId, eIdorName) == 0 || strcasecmp(list[i].name, eIdorName) == 0)
         {
             Index = i;
 

@@ -82,11 +82,10 @@ int loadAccounts(Account list[]) {
     
     int count = 0;
 
-    while (fscanf(file, "%s %s %s %s %d %d %d", 
+    while (fscanf(file, "%s %s %s %d %d %d", 
                   list[count].studentid, 
                   list[count].username,   
                   list[count].password, 
-                  list[count].email,
                   &list[count].role, 
                   &list[count].isLocked, 
                   &list[count].failCount) == 6) { 

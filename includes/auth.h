@@ -20,4 +20,6 @@ int Login(char mssv[], char ps[], Account list[], int accountCount);
 void changePassword(Account *currentAcc);
 int Logout(Account *currentAcc, Account list[], int accountCount);
 void setUpEmain(Account *account);
+void forgotPassword(Account list[], int accountCount);
+void setupEmail(Account *account, Account list[], int accountCount);
 #endif
