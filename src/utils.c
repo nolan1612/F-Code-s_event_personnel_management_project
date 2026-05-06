@@ -160,7 +160,7 @@ int confirmAction( char message[]) {
         printf(">> Error: Invalid input! Please enter Y or N.\n");
     }
 }
-void isValidEmail(char email[]){
+int isValidEmail(char email[]){
     if(email == NULL || strlen(email) == 0) return 0;
     //kiem tra dau cach 
     for(int i = 0; i <= strlen(email) - 1; i++){
@@ -180,7 +180,7 @@ void isValidEmail(char email[]){
     if(extra != NULL) return 0;
 
     char part2cpy[101];
-    strncpy(part2cpy, part2, sizeof(*part2) - 1);
+    strncpy(part2cpy, part2, sizeof(part2cpy) - 1);
     part2cpy[sizeof(part2cpy) - 1] = '\0';
 
     char *token = strtok(part2cpy, ".");
