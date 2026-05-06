@@ -28,10 +28,11 @@ void saveAccounts(Account list[], int count) {
     
     for (int i = 0; i < count; i++) {
        
-        fprintf(file, "%s %s %s %d %d %d\n", 
+        fprintf(file, "%s %s %s %s %d %d %d\n", 
                 list[i].studentid, 
                 list[i].username,
                 list[i].password, 
+                list[i].email,
                 list[i].role, 
                 list[i].isLocked, 
                 list[i].failCount);

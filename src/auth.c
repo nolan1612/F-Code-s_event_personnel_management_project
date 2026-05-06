@@ -12,7 +12,8 @@ int checkPassword(char ps[], Account *account);
 int Login(char mssv[], char ps[], Account list[], int accountCount) ;
 void changePassword(Account *currentAcc);
 int Logout(Account *currentAcc, Account list[], int accountCount);
-
+void forgotPassword(Account list[], int accountCount);
+void setupEmail(Account *account, Account list[], int accountCount);
 int checkPassword(char ps[], Account *account) {
     if (strcmp(ps, account->password) == 0) {
         account->failCount = 0; 
@@ -74,7 +75,7 @@ int Login(char mssv[], char ps[], Account list[], int accountCount) {
             
             
             if (failCount >= 3) {
-                printf("\033[1;33m[Tip]\033[0m If you forgot your password, type '0' to exit and ask the Admin to reset it!\n");
+                printf("\033[1;33m[Tip]\033[0m If you forgot your password, type '0' to exit\n");
             } else {
                 printf(">> Please try again.\n");
             }
@@ -128,4 +129,76 @@ int Logout(Account *currentAcc, Account list[], int accountCount) {
         printf(">> Logout canceled.\n");
         return 0;
     }
+}
+void forgotPassword(Account list[], int accountCount){
+    char inputEmail[101];
+    char foundIndex = -1;
+    printf("==FORGOT PASSWORD==\n");
+    printf("plz,input your email\n");
+    scanf(" %[^\n]", inputEmail);
+    
+    if (strcmp(inputEmail, "0") == 0) {
+        printf(">> Action canceled. Returning to menu...\n");
+        return;
+    }
+    if (isValidEmail(inputEmail) == 0) {
+        printf(">> Error: Invalid email format!\n");
+        return;
+    }
+    for(int i = 0; i <= accountCount - 1; i++){
+        if(strcmp(list[i].email, inputEmail) == 0){
+            foundIndex = i;
+            break;
+        }
+    }
+    if (foundIndex == -1) {
+        printf(">> Error: Email does not exist in the system!\n");
+        return;
+    }
+    char newPass[20], confirmPass[20];
+    while(1) {
+        printf(">> Account found! Enter new password (Type '0' to cancel): ");
+        scanf(" %[^\n]", newPass); 
+        
+        if (strcmp(newPass, "0") == 0) {
+            printf(">> Action canceled. Returning to menu...\n");
+            return;
+        }
+
+        printf("Confirm new password: ");
+        scanf(" %[^\n]", confirmPass);
+
+        if (strcmp(newPass, confirmPass) != 0) {
+            printf(">> Error: Password confirmation does not match. Please try again!\n");
+        } else {
+            strcpy(list[foundIndex].password, newPass);
+            list[foundIndex].failCount = 0;
+            list[foundIndex].isLocked = 0;
+            saveAccounts(list, accountCount);
+            printf("\033[1;32m>> Success: Your password has been successfully recovered!\033[0m\n");
+            break; 
+        }
+    }
+}
+void setupEmail(Account *account, Account list[], int accountCount) {
+    printf("=== Setup Email ===\n");
+
+    char email[100];
+
+    while (1) {
+        printf("Input new email: ");
+        scanf(" %99[^\n]", email);
+
+        if (isValidEmail(email)) {
+            break; // hợp lệ → thoát vòng lặp
+        }
+
+        printf("Invalid email! Please try again.\n");
+    }
+
+    strncpy(account->email, email, sizeof(account->email) - 1);
+    account->email[sizeof(account->email) - 1] = '\0';
+
+    saveAccounts(list, accountCount);
+    printf("Email setup successfully!\n");
 }

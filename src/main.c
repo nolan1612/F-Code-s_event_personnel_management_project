@@ -35,14 +35,13 @@ int main() {
             printf("Goodbye! See you again.\n");
             break;
         } else if (choice == 1) {
-           
             printf("\n--- LOGIN ---\n");
             printf("Enter Student ID: ");
             scanf(" %9[^\n]", mssv); 
             
             while(1) {  
                 printf("Enter password: ");
-                scanf(" %[^\n]", ps);
+                scanf(" %19[^\n]", ps);
                 
                 int status = Login(mssv, ps, list, accountCount);
                
@@ -56,6 +55,7 @@ int main() {
                     saveAccounts(list, accountCount); 
                     break;
                 } else if (status == -1) {
+<<<<<<< HEAD
                     // Sai Pass: Lưu để cập nhật failCount
                     saveAccounts(list, accountCount);
                 } else if (status == -2) {
@@ -71,3 +71,22 @@ int main() {
         return 0;
     }
 }
+=======
+    
+            saveAccounts(list, accountCount);
+            
+        } else if (status == -2) {
+        
+            break;
+            
+        } else if (status == -3) {
+            
+            saveAccounts(list, accountCount);
+            break;
+        }
+                return 0;
+            }
+        }
+    }
+}
+>>>>>>> 2312a9d2852bc41e042bdfbaecf727b9ab0c9e30
