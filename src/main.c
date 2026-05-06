@@ -55,23 +55,6 @@ int main() {
                     saveAccounts(list, accountCount); 
                     break;
                 } else if (status == -1) {
-<<<<<<< HEAD
-                    // Sai Pass: Lưu để cập nhật failCount
-                    saveAccounts(list, accountCount);
-                } else if (status == -2) {
-                    // Sai MSSV: TUYỆT ĐỐI KHÔNG LƯU FILE, chỉ thoát vòng lặp pass
-                    break;
-                } else if (status == -3) {
-                    // Bị khóa tài khoản: Lưu án phạt
-                    saveAccounts(list, accountCount);
-                    break;
-                }
-            } 
-        }
-        return 0;
-    }
-}
-=======
     
             saveAccounts(list, accountCount);
             
@@ -86,7 +69,7 @@ int main() {
         }
                 return 0;
             }
-        }
+        } 
     }
 }
->>>>>>> 2312a9d2852bc41e042bdfbaecf727b9ab0c9e30
+
