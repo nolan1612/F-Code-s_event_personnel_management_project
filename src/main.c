@@ -38,7 +38,7 @@ int main() {
            
             printf("\n--- LOGIN ---\n");
             printf("Enter Student ID: ");
-            scanf(" %[^\n]", mssv); 
+            scanf(" %9[^\n]", mssv); 
             
             while(1) {  
                 printf("Enter password: ");
@@ -56,14 +56,18 @@ int main() {
                     saveAccounts(list, accountCount); 
                     break;
                 } else if (status == -1) {
+                    // Sai Pass: Lưu để cập nhật failCount
                     saveAccounts(list, accountCount);
-                    
-                } else if (status == -2 || status == -3){
+                } else if (status == -2) {
+                    // Sai MSSV: TUYỆT ĐỐI KHÔNG LƯU FILE, chỉ thoát vòng lặp pass
+                    break;
+                } else if (status == -3) {
+                    // Bị khóa tài khoản: Lưu án phạt
                     saveAccounts(list, accountCount);
                     break;
                 }
-            }
-        } 
+            } 
+        }
+        return 0;
     }
-    return 0;
 }
